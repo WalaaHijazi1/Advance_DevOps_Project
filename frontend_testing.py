@@ -62,7 +62,7 @@ driver = webdriver.Chrome(service=service, options=driver_options)
 
 # Define the URL to test
 user_id = 1
-url = f"http://127.0.0.1:5000/users/{user_id}"
+url = f"http://127.0.0.1:5001/users/{user_id}"
 #url = f"http://172.17.0.1:5000/users/{user_id}"
 
 

@@ -5,7 +5,8 @@ import logging
 import pymysql
 from contextlib import closing
 
-
+import os
+import signal
 
 from werkzeug.exceptions import HTTPException
 
@@ -143,6 +144,32 @@ def put_request(user_id, new_user_name):
         On success: return JSON : {“status”: “ok”, “user_deleted”: <USER_ID>} + code: 200
         On error: return JSON : {“status”: “error”, “reason”: ”no such id”} + code: 500
         """
+
+"""   
+How It Works
+@app.route('/stop_server')
+
+This defines a Flask route at /stop_server.
+When a user or another program makes a GET request to http://127.0.0.1:5000/stop_server (or another port where the Flask app is running), this function gets executed.
+os.getpid()
+
+This retrieves the process ID (PID) of the currently running Flask application.
+os.kill(os.getpid(), signal.CTRL_C_EVENT)
+
+This sends a CTRL+C (SIGINT) signal to the process with the given PID.
+This effectively stops the Flask server, simulating a manual CTRL+C keyboard interruption.
+return 'Server stopped'
+
+After killing the server process, this message would typically be returned.
+However, since the server is being stopped, the message may not always be sent back to the client before termination.
+"""
+
+
+@app.route('/stop_server')
+def stop_server():
+    os.kill(os.getpid(), signal.CTRL_C_EVENT)
+    return 'Server stopped'
+
 
 def delete_func(user_id):
     if request.method == 'DELETE': 
