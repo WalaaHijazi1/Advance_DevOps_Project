@@ -12,6 +12,15 @@ pipeline {
             }
         }
 
+        stage('Update Repository') {
+            steps {
+        	 sh '''
+               git fetch --all
+               git reset --hard origin/main
+        	'''
+    	}
+         }
+
         stage('Install Dependencies') {
             steps {
         	script {
