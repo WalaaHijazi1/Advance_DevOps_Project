@@ -22,16 +22,16 @@ pipeline {
             }
         }
 
-        stage('Start Backend') {
-            steps {
-                sh '''
-                    . $VENV_DIR/bin/activate
-                    nohup python3 rest_app.py > rest_app.log 2>&1 &
-                    echo $! > rest_app.pid  # Store the process ID
-                '''
-            }
-        }
-
+         stage('Start Backend') {
+             steps {
+        		sh '''
+            		source $VENV_DIR/bin/activate
+            		nohup python3 -u rest_app.py > rest_app.log 2>&1 &
+            		echo $! > rest_app.pid
+            		sleep 3  # Give it time to start
+       		 '''
+    		}
+	}
         stage('Wait for Backend') {
             steps {
                 sh '''
