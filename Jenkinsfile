@@ -16,7 +16,7 @@ pipeline {
             steps {
                 sh '''
                     python3 -m venv $VENV_DIR
-                    source $VENV_DIR/bin/activate
+                    . $VENV_DIR/bin/activate
                     pip install --no-cache-dir --upgrade -r requirements.txt
                 '''
             }
@@ -25,7 +25,7 @@ pipeline {
         stage('Start Backend') {
             steps {
                 sh '''
-                    source $VENV_DIR/bin/activate
+                    . $VENV_DIR/bin/activate
                     nohup python3 rest_app.py > rest_app.log 2>&1 &
                     echo $! > rest_app.pid  # Store the process ID
                 '''
@@ -54,7 +54,7 @@ pipeline {
         stage('Run backend_testing.py') {
             steps {
                 sh '''
-                    source $VENV_DIR/bin/activate
+                    . $VENV_DIR/bin/activate
                     python3 backend_testing.py
                 '''
             }
@@ -72,7 +72,7 @@ pipeline {
         stage('Run frontend_testing.py') {
             steps {
                 sh '''
-                    source $VENV_DIR/bin/activate
+                    . $VENV_DIR/bin/activate
                     python3 frontend_testing.py
                 '''
             }
