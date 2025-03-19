@@ -12,20 +12,34 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
-            steps {
-                sh '''
-                    python3 -m venv $VENV_DIR
-                    . $VENV_DIR/bin/activate
-                    pip install --no-cache-dir --upgrade -r requirements.txt
-                '''
-            }
-        }
+         stage('Install Dependencies') {
+              steps {
+        		sh '''
+            		# Define the virtual environment directory
+            		VENV_DIR="myenv"
+
+                           # Check if the virtual environment exists
+            	             if [ ! -d "$VENV_DIR" ]; then
+                	     echo "Virtual environment not found. Creating a new one..."
+                	     python3 -m venv $VENV_DIR
+            	             fi
+
+            	             # Activate the virtual environment
+            	             . $VENV_DIR/bin/activate
+
+            		# Upgrade pip and install dependencies
+            		pip install --no-cache-dir --upgrade -r requirements.txt
+
+	              # Run the application
+             		python3 rest_app.py
+        			'''
+    		}
+	}
 
          stage('Start Backend') {
              steps {
         		sh '''
-            		source $VENV_DIR/bin/activate
+            		. $VENV_DIR/bin/activate
             		nohup python3 -u rest_app.py > rest_app.log 2>&1 &
             		echo $! > rest_app.pid
             		sleep 3  # Give it time to start
@@ -63,7 +77,7 @@ pipeline {
         stage('Run combined_testing.py') {
             steps {
                 sh '''
-                    source $VENV_DIR/bin/activate
+                    .  $VENV_DIR/bin/activate
                     python3 combined_testing.py
                 '''
             }
