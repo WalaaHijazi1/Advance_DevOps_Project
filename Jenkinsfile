@@ -28,7 +28,7 @@ pipeline {
             	            . $VENV_DIR/bin/activate
 
             	            # Upgrade pip and install dependencies
-            	            pip install --no-cache-dir --upgrade -r requirements.txt
+            	            pip install --no-cache-dir -r requirements.txt
 
 	            # Run the application
             	            python3 rest_app.py
