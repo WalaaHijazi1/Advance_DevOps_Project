@@ -16,7 +16,7 @@ pipeline {
          steps {
         	sh '''
             		# Define the virtual environment directory
-            		VENV_DIR="myenv"
+            		VENV_DIR="venv"
 
             		# Check if the virtual environment exists
             		if [ ! -d "$VENV_DIR" ]; then
@@ -25,7 +25,7 @@ pipeline {
 		fi
 
 	            # Activate the virtual environment and install dependencies
-            	            source $VENV_DIR/bin/activate
+            	            . $VENV_DIR/bin/activate
 
             	            # Upgrade pip and install dependencies
             	            pip install --no-cache-dir --upgrade -r requirements.txt
