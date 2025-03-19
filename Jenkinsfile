@@ -106,6 +106,7 @@ pipeline {
             steps {
                  script {
             		sh '''
+                    	.  $VENV_DIR/bin/activate
             		# Stop the backend and frontend servers
             		python3 clean_environment.py
             	'''
