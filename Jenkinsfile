@@ -12,36 +12,23 @@ pipeline {
             }
         }
 
-       stage('Install Dependencies') {
-           steps {
-        	sh '''
-            		# Define the virtual environment directory
-            		VENV_DIR="venv"
-
-	            # Check if the virtual environment exists
-            		if [ ! -d "$VENV_DIR" ]; then
-                	       echo "Virtual environment not found. Creating a new one..."
-                 	       python3 -m venv $VENV_DIR
-            		else
-                	        echo "Virtual environment already exists."
-	             fi
-
-	            # Debug: List the contents of the virtual environment directory
-            	            echo "Listing virtual environment directory contents:"
-	            ls -l $VENV_DIR
-
-	            # Activate the virtual environment and install dependencies
-            	            . $VENV_DIR/bin/activate
-
-	            # Upgrade pip and install dependencies
-            	            pip install --no-cache-dir -r requirements.txt
-
-	            # Run the application
-            	            python3 rest_app.py
-	        '''
-    		}
-	}
-
+        stage('Install Dependencies') {
+            steps {
+        	script {
+           VENV_DIR = 'venv'
+           
+ 	 // Remove existing venv to avoid corruption or permission issues
+            	sh "rm -rf ${VENV_DIR}"
+            	// Create a fresh virtual environment
+            	sh "python3 -m venv ${VENV_DIR}"
+            	// Activate and install dependencies
+            	sh """
+                . ${VENV_DIR}/bin/activate
+                pip install -r requirements.txt
+            """
+    	    	}
+    	}
+         }
          stage('Start Backend') {
              steps {
         		sh '''
