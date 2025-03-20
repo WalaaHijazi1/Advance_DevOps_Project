@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        VENV_DIR = "myenv"  // Define virtual environment directory
+        VENV_DIR = "venv"  // Define virtual environment directory
     }
 
     stages {
