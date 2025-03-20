@@ -3,4 +3,3 @@ requests
 pymysql
 webdriver-manager==4.0.0
 flask
-signal
