@@ -41,7 +41,7 @@ pipeline {
         stage('Run rest_app.py') {
             steps {
                 sh '''
-            	      . .myenv/bin/activate
+            	      . ${VENV_DIR}/bin/activate
             	      nohup python3 rest_app.py &  # Start rest_app.py in the background
             
              	     # Wait for the backend service to be available (check every 2 seconds for up to 30 seconds)
@@ -64,7 +64,7 @@ pipeline {
         stage('Run web_app.py') {
             steps {
                 sh '''
-            	      . .myenv/bin/activate
+            	      . ${VENV_DIR}/bin/activate
             	      nohup python3 web_app.py &  # Start rest_app.py in the background
             
              	     # Wait for the backend service to be available (check every 2 seconds for up to 30 seconds)
