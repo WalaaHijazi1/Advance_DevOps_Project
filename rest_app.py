@@ -167,7 +167,7 @@ However, since the server is being stopped, the message may not always be sent b
 
 @app.route('/stop_server')
 def stop_server():
-    os.kill(os.getpid(), signal.CTRL_C_EVENT)
+    os.kill(os.getpid(), signal.SIGINT)
     return 'Server stopped'
 
 

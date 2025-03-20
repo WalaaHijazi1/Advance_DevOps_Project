@@ -19,10 +19,11 @@ if user_name == None:
 return "<H1 id='error'>" no such user: + user_id + "</H1>"
 """
 
-from flask import Flask
+from flask import Flask, jsonify
 from db_connector import connect_data_table
 import os
 import signal
+import requests
 
 # creates a Flask application object — app — in the current Python module
 app = Flask(__name__)
@@ -72,8 +73,16 @@ However, since the server is being stopped, the message may not always be sent b
 
 @app.route('/stop_server')
 def stop_server():
-    os.kill(os.getpid(), signal.CTRL_C_EVENT)
-    return 'Server stopped'
+    response = jsonify({"message": "Shutting down server..."})  # Prepare response
+    response.status_code = 200
+    print("Shutting down server...")  # Optional: Log before shutting down
+    os.kill(os.getpid(), signal.SIGINT)  # Shut down AFTER responding
+    return response  # Send response first
+
+#@app.route('/stop_server')
+#def stop_server():
+#    os.kill(os.getpid(), signal.SIGINT) #SIGINT is the Unix equivalent of a Ctrl+C interrupt.
+#    return 'Server stopped'
 
 
 if __name__ == "__main__":
