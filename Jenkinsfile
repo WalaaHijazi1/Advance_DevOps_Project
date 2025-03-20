@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git credentialsId: 'github-pat', url: 'https://github.com/WalaaHijazi1/DevOps_Advance_Project.git', branch: 'main'
+                git credentialsId: 'github-pat', url: 'https://github.com/WalaaHijazi1/Advance_DevOps_Project.git', branch: 'main'
             }
         }
 
