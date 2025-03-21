@@ -23,9 +23,7 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-        	script {
-           VENV_DIR = 'venv'
-           
+        	script {      
  	 // Remove existing venv to avoid corruption or permission issues
             	sh "rm -rf ${VENV_DIR}"
             	// Create a fresh virtual environment
@@ -42,7 +40,8 @@ pipeline {
             steps {
                 sh '''
             	      . ${VENV_DIR}/bin/activate
-            	      nohup python3 rest_app.py &  # Start rest_app.py in the background
+            	      //nohup python3 rest_app.py &  # Start rest_app.py in the background
+	     nohup python3 rest_app.py > rest_app.log 2>&1 &
             
              	     # Wait for the backend service to be available (check every 2 seconds for up to 30 seconds)
             	     counter=0
@@ -65,7 +64,9 @@ pipeline {
             steps {
                 sh '''
             	      . ${VENV_DIR}/bin/activate
-            	      nohup python3 web_app.py &  # Start rest_app.py in the background
+            	      //nohup python3 web_app.py &  # Start rest_app.py in the background
+	      nohup python3 web_app.py > web_app.log 2>&1 &
+
             
              	     # Wait for the backend service to be available (check every 2 seconds for up to 30 seconds)
             	     counter=0
@@ -122,7 +123,21 @@ pipeline {
         }
     }
 }
-
-
     }
+  post {
+      failure {
+          script {
+              emailext subject: '$DEFAULT_SUBJECT',
+                  body: '$DEFAULT_CONTENT',
+                  recipientProviders: [
+                      [$class: 'CulpritsRecipientProvider'],
+                      [$class: 'DevelopersRecipientProvider'],
+                      [$class: 'RequesterRecipientProvider']
+                  ],
+                  replyTo: '$DEFAULT_REPLYTO',
+                  to: '$DEFAULT_RECIPIENTS'
+          }
+      }
+}
+
 }
