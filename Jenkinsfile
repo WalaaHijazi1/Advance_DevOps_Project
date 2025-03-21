@@ -124,20 +124,14 @@ pipeline {
     }
 }
     }
-  post {
-      failure {
-          script {
-              emailext subject: '$DEFAULT_SUBJECT',
-                  body: '$DEFAULT_CONTENT',
-                  recipientProviders: [
-                      [$class: 'CulpritsRecipientProvider'],
-                      [$class: 'DevelopersRecipientProvider'],
-                      [$class: 'RequesterRecipientProvider']
-                  ],
-                  replyTo: '$DEFAULT_REPLYTO',
-                  to: '$DEFAULT_RECIPIENTS'
-          }
-      }
+post {
+    failure {
+        script {
+            emailext subject: 'Jenkins Build Failed!',
+                body: 'The pipeline failed. Please check Jenkins logs for details.',
+                to: 'walaa.25.11@hotmail.com'
+        }
+    }
 }
 
 }
