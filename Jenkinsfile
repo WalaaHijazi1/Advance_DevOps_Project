@@ -2,13 +2,13 @@ pipeline {
     agent any
 
     environment {
-        //VENV_DIR = "venv"  // Define virtual environment directory
+        VENV_DIR = "venv"  // Define virtual environment directory
     }
 
     stages {
         stage('Clone Repository') {
             steps {
-                git credentialsId: 'github-pat', url: 'https://github.com/WalaaHijazi1/Advance_DevOps_Project.git', branch: 'main'
+                git credentialsId: 'github-pat', url: 'https://github.com/WalaaHijazi1/Advance_DevOps_Project.git', branch: 'master'
             }
         }
 
