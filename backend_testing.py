@@ -36,8 +36,8 @@ def post_new_data():
     # response.status_code == 200 checks whether the HTTP status code of the response is 200, which indicates success (OK) in HTTP.
     # I can delete it because in the app python file there is already have a return status code if there is a problem, but the error raising message
     # can help detect the exact error and handled in a short time.
-    new_data = {'user_id' : 30,
-                'user_name': 'jack', 
+    new_data = {'user_id' : 31,
+                'user_name': 'sandy', 
                 'creation_date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 }
     
@@ -75,7 +75,7 @@ def get_endpoint():
     # Some APIs block requests from unknown sources, so using a User-Agent makes the request look legitimate.
     headers = {'User-Agent': 'Mozilla/5.0'}
     
-    get_response = requests.get(f"{url}/{user_id}", headers=headers, json=new_data)  # Sends a GET request to retrieve the user data.
+    get_response = requests.get(f"{url}/get_user_data/{user_id}", headers=headers, json=new_data)  # Sends a GET request to retrieve the user data.
 
     # Print debug information to get more details
     print(f"GET request to {url}/{user_id} returned status code {get_response.status_code}")
