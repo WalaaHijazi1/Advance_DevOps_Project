@@ -23,7 +23,7 @@ import pymysql
 url = 'http://127.0.0.1:5000/users'
 
 
-"""
+
 # Post a new user data to the REST API using POST method.
 def post_new_data():
 
@@ -65,24 +65,19 @@ def post_new_data():
     # checking the status code of the response if the test was passed successfull, if not it raises an error!
     assert response.status_code == 200 , f"API Error! Status Code: {response.status_code}, Response: {response.text}"
     return print(f"get test was successfully passed. data from get response: {data_from_post}")
-"""
+
 
 # This function sends a GET request to retrieve a specific user's data
 # from an API and verifies that the response is correct.
 def get_endpoint():
-    new_data = {'user_id' : 31,
-                'user_name': 'sandy', 
-                'creation_date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                }
-    
-    # global new_data
+    global new_data
     user_id = new_data['user_id']
     
     # Defines a custom HTTP header to mimic a request from a web browser.
     # Some APIs block requests from unknown sources, so using a User-Agent makes the request look legitimate.
     headers = {'User-Agent': 'Mozilla/5.0'}
     
-    get_response = requests.get(f"{url}/get_user_data/{user_id}", headers=headers)  # Sends a GET request to retrieve the user data.
+    get_response = requests.get(f"{url}/{user_id}", headers=headers)  # Sends a GET request to retrieve the user data.
 
     # Print debug information to get more details
     print(f"GET request to {url}/get_user_data/{user_id} returned status code {get_response.status_code}")
