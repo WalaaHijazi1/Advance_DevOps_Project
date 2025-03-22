@@ -1,5 +1,12 @@
 pipeline {
     agent any
+    options {
+        buildDiscarder(logRotator(daysToKeepStr: '5', numToKeepStr: '20'))
+    }
+
+    triggers {
+        pollSCM('H/30 * * * *')
+    }
 
     environment {
         VENV_DIR = "venv"  // Define virtual environment directory
