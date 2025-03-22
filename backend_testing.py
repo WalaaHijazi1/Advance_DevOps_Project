@@ -76,11 +76,7 @@ def get_endpoint():
     headers = {'User-Agent': 'Mozilla/5.0'}
     
     get_response = requests.get(f"{url}/{user_id}", headers=headers, json=new_data)  # Sends a GET request to retrieve the user data.
-    Passes:
-    # headers=headers → Sends a browser-like request.
 
-
-    
     # Print debug information to get more details
     print(f"GET request to {url}/{user_id} returned status code {get_response.status_code}")
     print(f"Response Content: {get_response.text}")
@@ -93,6 +89,3 @@ def get_endpoint():
 
 post_new_data()
 get_endpoint()
-
-
-
