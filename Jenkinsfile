@@ -1,6 +1,21 @@
+//2. Parameterized build:
+// Read about “Parameterized build” https://wiki.jenkins.io/display/jenkins/parameterized+build
+// Create another pipeline with the same steps as the previous pipeline and disable
+//poll scm mechanism (the new pipeline will be triggered manually only.
+//E.g: “build now” button).
+// The pipeline will get an int parameter which will cause the below modes:
+//o In case the int value is 1 – only frontend_testing.py will run.
+//o In case the int value is 2 – only backend_testing.py will run.
+//o In case the int value is 3 – only combined_testing.py will run.
+// Default int value will be 3.
+
+
+
 pipeline {
     agent any
-
+    parameters {
+        string(name: 'TEST_MODE', defaultValue: '3', description: '1 - Frontend, 2 - Backend, 3 - Combined')
+    }
     environment {
         VENV_DIR = "venv"  // Define virtual environment directory
     }
@@ -8,121 +23,27 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git credentialsId: 'github-pat', url: 'https://github.com/WalaaHijazi1/Advance_DevOps_Project.git', branch: 'main'
+                git credentialsId: 'github-pat', url: 'https://github.com/WalaaHijazi1/Advance_DevOps_Project.git', branch: 'Jenkins-ParametrizedBuild'
             }
         }
-
-        stage('Update Repository') {
+    stages {
+        stage('Clone Repository') {
             steps {
-        	 sh '''
-               git fetch --all
-               git reset --hard origin/main
-        	'''
-    	}
-         }
-
-        stage('Install Dependencies') {
-            steps {
-        	script {
-           VENV_DIR = 'venv'
-           
- 	 // Remove existing venv to avoid corruption or permission issues
-            	sh "rm -rf ${VENV_DIR}"
-            	// Create a fresh virtual environment
-            	sh "python3 -m venv ${VENV_DIR}"
-            	// Activate and install dependencies
-            	sh """
-                . ${VENV_DIR}/bin/activate
-                pip install -r requirements.txt
-            """
-    	    	}
-    	}
-         }
-        stage('Run rest_app.py') {
-            steps {
-                sh '''
-            	      . ${VENV_DIR}/bin/activate
-            	      nohup python3 rest_app.py &  # Start rest_app.py in the background
-            
-             	     # Wait for the backend service to be available (check every 2 seconds for up to 30 seconds)
-            	     counter=0
-            	     while ! curl -s 127.0.0.1:5000 > /dev/null && [ $counter -lt 15 ]; do
-                	echo "Waiting for backend to be available..."
-                	sleep 2
-                	counter=$((counter + 1))
-                   done
-            
-            	     if [ $counter -eq 15 ]; then
-                	echo "Backend did not start in time."
-                	exit 1
-            	     fi
-                    echo "Backend is up and running."
-        	'''
-    	}
-         }
-
-        stage('Run web_app.py') {
-            steps {
-                sh '''
-            	      . ${VENV_DIR}/bin/activate
-            	      nohup python3 web_app.py &  # Start rest_app.py in the background
-            
-             	     # Wait for the backend service to be available (check every 2 seconds for up to 30 seconds)
-            	     counter=0
-            	     while ! curl -s 127.0.0.1:5001 > /dev/null && [ $counter -lt 15 ]; do
-                	echo "Waiting for backend to be available..."
-                	sleep 2
-                	counter=$((counter + 1))
-                   done
-            
-            	     if [ $counter -eq 15 ]; then
-                	echo "Backend did not start in time."
-                	exit 1
-            	     fi
-                    echo "Backend is up and running."
-        	'''
-    	}
-         }
-
-        stage('Run backend_testing.py') {
-            steps {
-                sh '''
-                    . $VENV_DIR/bin/activate
-                    python3 backend_testing.py
-                '''
+                git branch: 'Jenkins-ParameterizedBuild', url: 'https://github.com/WalaaHijazi1/Advance_DevOps_Project.git'
             }
         }
-
-        stage('Run frontend_testing.py') {
+        stage('Run Tests') {
             steps {
-                sh '''
-                    . $VENV_DIR/bin/activate
-                    python3 frontend_testing.py
-                '''
+                script {
+                    if (params.TEST_MODE == '1') {
+                        sh 'python frontend_testing.py'
+                    } else if (params.TEST_MODE == '2') {
+                        sh 'python backend_testing.py'
+                    } else {
+                        sh 'python combined_testing.py'
+                    }
+                }
             }
         }
-
-        stage('Run combined_testing.py') {
-            steps {
-                sh '''
-                    .  $VENV_DIR/bin/activate
-                    python3 combined_testing.py
-                '''
-            }
-        }
-
-        stage('Stop Servers') {
-            steps {
-                 script {
-            		sh '''
-                    	.  $VENV_DIR/bin/activate
-            		# Stop the backend and frontend servers
-            		python3 clean_environment.py
-            	'''
-        }
-    }
-}
-
-
     }
 }
