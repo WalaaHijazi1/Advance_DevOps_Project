@@ -41,7 +41,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
         	script {      
- 	 # Remove existing venv to avoid corruption or permission issues
+ 	 // Remove existing venv to avoid corruption or permission issues
             	sh "rm -rf ${VENV_DIR}"
             	# Create a fresh virtual environment
             	sh "python3 -m venv ${VENV_DIR}"
