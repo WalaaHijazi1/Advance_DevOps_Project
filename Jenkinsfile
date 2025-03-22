@@ -54,19 +54,22 @@ pipeline {
 	          port = "5000"
                     }
             		sh """
-                		. ${VENV_DIR}/bin/activate
-                		nohup python3 ${server_name} > flask.log 2>&1 &  # Start Flask in background
-                
-                		# Wait for the server to be ready (HTTP 200 response)
-                		echo "Waiting for Flask server on port ${port}..."
-                		for i in {1..10}; do
-                    		     if curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:${port}/ | grep 200; then
-                        		     echo "Flask server is ready!"
-                        		     break
-                    		fi
-                    		echo "Waiting..."
-                    		sleep 3
-                	done
+            	      	. ${VENV_DIR}/bin/activate
+            	      	nohup python3 {server_name} &  # Start rest_app.py in the background
+            
+             	     	# Wait for the backend service to be available (check every 2 seconds for up to 30 seconds)
+            	     	counter=0
+            	    	 while ! curl -s 127.0.0.1:${port} > /dev/null && [ $counter -lt 15 ]; do
+                		echo "Waiting for backend to be available..."
+                		sleep 2
+                		counter=$((counter + 1))
+                   	done
+            
+            	     	if [ $counter -eq 15 ]; then
+                		echo "Backend did not start in time."
+                		exit 1
+            	     	fi
+                    	echo "Backend is up and running."
 
                 	python3 ${test_script}
             		"""
