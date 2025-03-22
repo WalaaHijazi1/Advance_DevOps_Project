@@ -40,11 +40,11 @@ pipeline {
             steps {
                 script {
                     if (params.TEST_MODE == '1') {
-                        sh 'python frontend_testing.py'
+                        sh 'python3 frontend_testing.py'
                     } else if (params.TEST_MODE == '2') {
-                        sh 'python backend_testing.py'
+                        sh 'python3 backend_testing.py'
                     } else {
-                        sh 'python combined_testing.py'
+                        sh 'python3 combined_testing.py'
                     }
                 }
             }
