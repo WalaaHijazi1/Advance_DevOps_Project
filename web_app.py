@@ -29,7 +29,7 @@ import requests
 app = Flask(__name__)
 
 
-def get_user_name1(user_id):
+def get_user_name(user_id):
     # Fetch user_name from database, not from Flask function!
     conn, cursor = connect_data_table()
     cursor.execute("SELECT user_name FROM users WHERE user_id = %s", (user_id,))
@@ -39,14 +39,15 @@ def get_user_name1(user_id):
     return result[0] if result else None
 
 
+
 @app.route("/users/get_user_data/<int:user_id>") #a Flask route decorator that maps a URL endpoint to a Python function in a web application.
-def get_user_name(user_id):
+def get_func():
 
     # sending user id to theget_user_name function and returning the user name:
-    user_name = get_user_name1(user_id)
+    user_name = get_user_name(user_id)
     
     if user_name:
-        return "<H1 id='user'>" + user_name + "</H1>"
+        return f"<H1 id='user'>{user_name}</H1>"
     else:
         return f"<H1 id='error'>No such user: {user_id}</H1>"
 

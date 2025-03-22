@@ -75,7 +75,7 @@ def get_endpoint():
     # Some APIs block requests from unknown sources, so using a User-Agent makes the request look legitimate.
     headers = {'User-Agent': 'Mozilla/5.0'}
     
-    get_response = requests.get(f"{url}/get_user_data/{user_id}", headers=headers, json=new_data)  # Sends a GET request to retrieve the user data.
+    get_response = requests.get(f"{url}/get_user_data/{user_id}", headers=headers)  # Sends a GET request to retrieve the user data.
 
     # Print debug information to get more details
     print(f"GET request to {url}/get_user_data/{user_id} returned status code {get_response.status_code}")
