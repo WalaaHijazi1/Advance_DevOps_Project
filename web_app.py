@@ -29,10 +29,10 @@ import requests
 app = Flask(__name__)
 
 
-def get_user_name(user_id):
+def get_user_name1(user_id):
     # Fetch user_name from database, not from Flask function!
     conn, cursor = connect_data_table()
-    cursor.execute("SELECT user_name FROM dbo.users WHERE users_id = ?", (user_id,))
+    cursor.execute("SELECT user_name FROM users WHERE user_id = %s", (user_id,))
     # Fetching data from table data:
     result = cursor.fetchone()
     conn.close()
@@ -43,7 +43,7 @@ def get_user_name(user_id):
 def get_user_name(user_id):
 
     # sending user id to theget_user_name function and returning the user name:
-    user_name = get_user_name(user_id)
+    user_name = get_user_name1(user_id)
     
     if user_name:
         return "<H1 id='user'>" + user_name + "</H1>"

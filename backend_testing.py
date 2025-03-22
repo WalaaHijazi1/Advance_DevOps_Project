@@ -78,7 +78,7 @@ def get_endpoint():
     get_response = requests.get(f"{url}/get_user_data/{user_id}", headers=headers, json=new_data)  # Sends a GET request to retrieve the user data.
 
     # Print debug information to get more details
-    print(f"GET request to {url}/{user_id} returned status code {get_response.status_code}")
+    print(f"GET request to {url}/get_user_data/{user_id} returned status code {get_response.status_code}")
     print(f"Response Content: {get_response.text}")
 
     # Proceed to check the status code
