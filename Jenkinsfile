@@ -43,12 +43,15 @@ pipeline {
                     if (params.TEST_MODE == '1') {
                         test_script = "frontend_testing.py"
 	          server_name = "web_app.py"
+	          port = "5001"
                     } else if (params.TEST_MODE == '2') {
                         test_script = "backend_testing.py"
 	          server_name = "rest_app.py"
+	          port = "5000"
                     } else {
                         test_script = "combined_testing.py"
 	          server_name = "rest_app.py"
+	          port = "5000"
                     }
 	     sh """
                 	. ${VENV_DIR}/bin/activate
@@ -57,7 +60,7 @@ pipeline {
                 	# Wait for Flask to be ready
                 	echo "Waiting for Flask server to start..."
                 	for i in {1..10}; do
-                    	     if nc -z localhost 5000; then
+                    	     if nc -z localhost ${port}; then
                         		echo "Flask is ready!"
                         		break
                     	fi
