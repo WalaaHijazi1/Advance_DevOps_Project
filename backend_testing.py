@@ -70,7 +70,12 @@ def post_new_data():
 # This function sends a GET request to retrieve a specific user's data
 # from an API and verifies that the response is correct.
 def get_endpoint():
-    global new_data
+    new_data = {'user_id' : 31,
+                'user_name': 'sandy', 
+                'creation_date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                }
+    
+    # global new_data
     user_id = new_data['user_id']
     
     # Defines a custom HTTP header to mimic a request from a web browser.
