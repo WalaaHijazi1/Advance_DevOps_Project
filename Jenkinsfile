@@ -50,11 +50,23 @@ pipeline {
                         test_script = "combined_testing.py"
 	          server_name = "rest_app.py"
                     }
-                    sh """
-                        . ${VENV_DIR}/bin/activate
-	          nohup python3 ${server_name} &  # Start rest_app.py in the background
-                        python3 ${test_script}
-                    """
+	     sh """
+                	. ${VENV_DIR}/bin/activate
+                	nohup python3 ${server_name} > flask.log 2>&1 &  # Start Flask in the background
+                
+                	# Wait for Flask to be ready
+                	echo "Waiting for Flask server to start..."
+                	for i in {1..10}; do
+                    	     if nc -z localhost 5000; then
+                        		echo "Flask is ready!"
+                        		break
+                    	fi
+                    	echo "Waiting..."
+                    		sleep 3
+                	done
+                
+                	python3 ${test_script}
+            		"""
                 }
             }
         }
