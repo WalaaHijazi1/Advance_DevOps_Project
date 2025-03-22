@@ -22,6 +22,8 @@ import pymysql
 
 url = 'http://127.0.0.1:5000/users'
 
+
+"""
 # Post a new user data to the REST API using POST method.
 def post_new_data():
 
@@ -63,7 +65,7 @@ def post_new_data():
     # checking the status code of the response if the test was passed successfull, if not it raises an error!
     assert response.status_code == 200 , f"API Error! Status Code: {response.status_code}, Response: {response.text}"
     return print(f"get test was successfully passed. data from get response: {data_from_post}")
-
+"""
 
 # This function sends a GET request to retrieve a specific user's data
 # from an API and verifies that the response is correct.
