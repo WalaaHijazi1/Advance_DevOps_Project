@@ -89,5 +89,5 @@ def get_endpoint():
     print(f"GET test passed successfully! Data from GET response: {data_response}")
 
 
-post_new_data()
+#post_new_data()
 get_endpoint()
