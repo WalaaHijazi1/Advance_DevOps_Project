@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git credentialsId: 'github-pat', url: 'https://github.com/WalaaHijazi1/Advance_DevOps_Project.git', branch: 'master'
+                git credentialsId: 'github-pat', url: 'https://github.com/WalaaHijazi1/Advance_DevOps_Project.git', branch: 'main'
             }
         }
 
@@ -124,14 +124,5 @@ pipeline {
     }
 }
     }
-post {
-    failure {
-        script {
-            emailext subject: 'Jenkins Build Failed!',
-                body: 'The pipeline failed. Please check Jenkins logs for details.',
-                to: 'walaa.25.11@hotmail.com'
-        }
-    }
-}
 
 }
