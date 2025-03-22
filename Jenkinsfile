@@ -53,21 +53,21 @@ pipeline {
 	          server_name = "rest_app.py"
 	          port = "5000"
                     }
-	     sh """
-                	. ${VENV_DIR}/bin/activate
-                	nohup python3 ${server_name} > flask.log 2>&1 &  # Start Flask in the background
+            		sh """
+                		. ${VENV_DIR}/bin/activate
+                		nohup python3 ${server_name} > flask.log 2>&1 &  # Start Flask in background
                 
-                	# Wait for Flask to be ready
-                	echo "Waiting for Flask server to start..."
-                	for i in {1..10}; do
-                    	     if nc -z localhost ${port}; then
-                        		echo "Flask is ready!"
-                        		break
-                    	fi
-                    	echo "Waiting..."
+                		# Wait for the server to be ready (HTTP 200 response)
+                		echo "Waiting for Flask server on port ${port}..."
+                		for i in {1..10}; do
+                    		     if curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:${port}/ | grep 200; then
+                        		     echo "Flask server is ready!"
+                        		     break
+                    		fi
+                    		echo "Waiting..."
                     		sleep 3
                 	done
-                
+
                 	python3 ${test_script}
             		"""
                 }
