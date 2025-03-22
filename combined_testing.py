@@ -16,25 +16,18 @@ Any failure will throw an exception using the following code: raise Exception("t
 import requests
 import datetime
 
-
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support.ui import WebDriverWait
-
-
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
-import os
 
+import os
 import pymysql
 import time
-import tempfile
+
 
 
 url = "http://127.0.0.1:5000/users"
 
-#url = "http://172.17.0.1:5000/users"
 
 # the post function is explained in the backend testing, this one is not very different from the one in the backend test.
 # if you want to understand the steps in here please go back to the function in the backend testing file.
@@ -64,7 +57,6 @@ def get_request():
     new_user_id = check_data()
     get_response = requests.get(f"{url}/{new_user_id}", json = new_user_data)
 
-    # data_response = get_response.json()  # Convert response to a dictionary
     try:
       data_response = get_response.json()  # Attempt to parse JSON
     except requests.exceptions.JSONDecodeError:
@@ -74,12 +66,6 @@ def get_request():
     
         # Proceed to check the status code
     assert get_response.status_code == 200, f"Expected status code 200, but got {get_response.status_code}"
-
-
-    
-    # assert data_response["user_name"] == new_user_name, \
-    # f"Unexpected user name, data from get response: {data_response}. {data_response.get('user_name')}"
-
 
     return print(f"get response was successfully done with data : {get_response.json()}")
 
@@ -145,7 +131,10 @@ def selenium_session():
     
     
     driver_options = Options()
-
+    
+    # Set Chrome options
+    # Options available in Selenium that help in testing in the background, disabling extensions, etc.
+    # It's an object that let the web driver customize the behavior of a web browser.
     driver_options.add_argument("--headless=new")
     driver_options.add_argument("--no-sandbox")
     driver_options.add_argument("--disable-dev-shm-usage")
@@ -153,10 +142,9 @@ def selenium_session():
     
     driver_options.add_argument(f"--user-data-dir={os.path.expanduser('~')}/chrome_data")
     
-    driver_options.add_argument("--remote-debugging-port=9222")  # Unique devtools port
+    driver_options.add_argument("--remote-debugging-port=9222")
     
-    # Set up the ChromeDriver Service
-    #service = Service(ChromeDriverManager().install())
+    
     # Set up the ChromeDriver Service
     chromedriver_path = "/root/.wdm/drivers/chromedriver/linux64/134.0.6998.88/chromedriver-linux64/chromedriver"
     service = Service(executable_path=chromedriver_path)
@@ -168,7 +156,7 @@ def selenium_session():
     try:
         
       new_url = f"http://127.0.0.1:5000/users/{new_user_id}"
-      #new_url = f"http://172.17.0.1:5000/users/{new_user_id}"
+
 
       driver.get(new_url) # The driver navigates to the constructed URL.
       # Print the page source (HTML content)
@@ -176,15 +164,14 @@ def selenium_session():
       print(f"the page content: {page_content}")
       time.sleep(2) # A short sleep of 2 seconds is introduced to allow the page time to load completely before further actions are taken.
 
-      wait = WebDriverWait(driver, 10)
-      
     finally:
       # Close the browser
       driver.quit()
 
 
+
 # Run all functions in sequence
-def main():
+if __name__ == "__main__":
     post_new_user()
     time.sleep(1)  # Give time for API processing
     get_request()
@@ -192,6 +179,3 @@ def main():
     check_data()
     time.sleep(1)
     selenium_session()
-
-if __name__ == "__main__":
-    main()

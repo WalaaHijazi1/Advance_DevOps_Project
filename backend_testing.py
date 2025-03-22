@@ -65,11 +65,21 @@ def post_new_data():
     return print(f"get test was successfully passed. data from get response: {data_from_post}")
 
 
+# This function sends a GET request to retrieve a specific user's data
+# from an API and verifies that the response is correct.
 def get_endpoint():
     global new_data
     user_id = new_data['user_id']
+    
+    # Defines a custom HTTP header to mimic a request from a web browser.
+    # Some APIs block requests from unknown sources, so using a User-Agent makes the request look legitimate.
     headers = {'User-Agent': 'Mozilla/5.0'}
-    get_response = requests.get(f"{url}/{user_id}", headers=headers, json=new_data)
+    
+    get_response = requests.get(f"{url}/{user_id}", headers=headers, json=new_data)  # Sends a GET request to retrieve the user data.
+    Passes:
+    # headers=headers → Sends a browser-like request.
+
+
     
     # Print debug information to get more details
     print(f"GET request to {url}/{user_id} returned status code {get_response.status_code}")

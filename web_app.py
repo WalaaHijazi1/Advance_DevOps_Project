@@ -75,15 +75,9 @@ However, since the server is being stopped, the message may not always be sent b
 def stop_server():
     response = jsonify({"message": "Shutting down server..."})  # Prepare response
     response.status_code = 200
-    print("Shutting down server...")  # Optional: Log before shutting down
+    print("Shutting down server...")
     os.kill(os.getpid(), signal.SIGINT)  # Shut down AFTER responding
-    return response  # Send response first
-
-#@app.route('/stop_server')
-#def stop_server():
-#    os.kill(os.getpid(), signal.SIGINT) #SIGINT is the Unix equivalent of a Ctrl+C interrupt.
-#    return 'Server stopped'
-
+    return response  # Send response
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5001, debug=True)
