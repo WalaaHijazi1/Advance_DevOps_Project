@@ -30,13 +30,17 @@ app = Flask(__name__)
 
 
 def get_user_name1(user_id):
-    # Fetch user_name from database, not from Flask function!
-    conn, cursor = connect_data_table()
-    cursor.execute("SELECT user_name FROM dbo.users WHERE users_id = ?", (user_id,))
-    # Fetching data from table data:
-    result = cursor.fetchone()
-    conn.close()
-    return result[0] if result else None
+    try:
+        # Fetch user_name from database, not from Flask function!
+        conn, cursor = connect_data_table()
+        cursor.execute("SELECT user_name FROM dbo.users WHERE users_id = ?", (user_id,))
+        # Fetching data from table data:
+        result = cursor.fetchone()
+        conn.close()
+        return result[0] if result else None
+    except Exception as e:
+        print(f"Error fetching user data: {e}")
+        return None
 
 
 @app.route("/users/get_user_data/<int:user_id>") #a Flask route decorator that maps a URL endpoint to a Python function in a web application.
