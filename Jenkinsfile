@@ -36,16 +36,21 @@ pipeline {
         		}
     	        }
 	}
-        stage('Run Tests') {
+         stage('Run Tests') {
             steps {
                 script {
+                    def test_script = ""
                     if (params.TEST_MODE == '1') {
-                        sh 'python3 frontend_testing.py'
+                        test_script = "frontend_testing.py"
                     } else if (params.TEST_MODE == '2') {
-                        sh 'python3 backend_testing.py'
+                        test_script = "backend_testing.py"
                     } else {
-                        sh 'python3 combined_testing.py'
+                        test_script = "combined_testing.py"
                     }
+                    sh """
+                        . ${VENV_DIR}/bin/activate
+                        python3 ${test_script}
+                    """
                 }
             }
         }
