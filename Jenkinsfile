@@ -26,12 +26,6 @@ pipeline {
                 git credentialsId: 'github-pat', url: 'https://github.com/WalaaHijazi1/Advance_DevOps_Project.git', branch: 'Jenkins-ParameterizedBuild'
             }
         }
-    stages {
-        stage('Clone Repository') {
-            steps {
-                git branch: 'Jenkins-ParameterizedBuild', url: 'https://github.com/WalaaHijazi1/Advance_DevOps_Project.git'
-            }
-        }
         stage('Run Tests') {
             steps {
                 script {
