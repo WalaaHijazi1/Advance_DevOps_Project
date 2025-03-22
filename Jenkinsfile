@@ -19,13 +19,23 @@ pipeline {
     environment {
         VENV_DIR = "venv"  // Define virtual environment directory
     }
-
     stages {
         stage('Clone Repository') {
             steps {
                 git credentialsId: 'github-pat', url: 'https://github.com/WalaaHijazi1/Advance_DevOps_Project.git', branch: 'Jenkins-ParameterizedBuild'
             }
         }
+        stage('Setup Virtual Environment') {
+            steps {
+                 script {
+	            sh '''
+	                python -m venv ${VENV_DIR}
+	                source ${VENV_DIR}/bin/activate
+	                pip install -r requirements.txt
+            		'''
+        		}
+    	        }
+	}
         stage('Run Tests') {
             steps {
                 script {
