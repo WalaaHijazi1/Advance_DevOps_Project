@@ -42,13 +42,17 @@ pipeline {
                     def test_script = ""
                     if (params.TEST_MODE == '1') {
                         test_script = "frontend_testing.py"
+	          server_name = "web_app.py"
                     } else if (params.TEST_MODE == '2') {
                         test_script = "backend_testing.py"
+	          server_name = "rest_app.py"
                     } else {
                         test_script = "combined_testing.py"
+	          server_name = "rest_app.py"
                     }
                     sh """
                         . ${VENV_DIR}/bin/activate
+	          nohup python3 ${server_name} &  # Start rest_app.py in the background
                         python3 ${test_script}
                     """
                 }
