@@ -43,9 +43,9 @@ pipeline {
         	script {      
  	 // Remove existing venv to avoid corruption or permission issues
             	sh "rm -rf ${VENV_DIR}"
-            	# Create a fresh virtual environment
+            	// Create a fresh virtual environment
             	sh "python3 -m venv ${VENV_DIR}"
-            	# Activate and install dependencies
+            	// Activate and install dependencies
             	sh """
                 . ${VENV_DIR}/bin/activate
                 pip install -r requirements.txt
