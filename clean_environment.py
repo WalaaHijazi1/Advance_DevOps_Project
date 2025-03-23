@@ -13,7 +13,7 @@ If the server is not running or unreachable, the function will print an error me
 def stop_server(url):
     try:
         # The function sends an HTTP GET request to the provided url using the requests library.
-        response = requests.get(url, timeout=5)      # If the server doesn’t respond within 5 seconds, it raises an exception.
+        response = requests.get(url, timeout=5)      # If the server doesnâ€™t respond within 5 seconds, it raises an exception.
 
         if response.status_code == 200:     # If the response status code is 200, it means the request was successful, and the server responded properly. and then it will print a success message.
             print(f"Successfully stopped server: {url}")
