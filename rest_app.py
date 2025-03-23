@@ -42,6 +42,9 @@ def home():
 def post_method():
 
     data = request.get_json()  # extracting JSON data sent by the client in a POST request.
+    
+    print(f"Received data: {data}")  # Add this line for debugging
+
 
     if not data or 'user_name' not in data: # if user name was not passed in the data json file, then it will return an error
         return jsonify({'status': 'error', 'reason': 'missing user_name'}), 400

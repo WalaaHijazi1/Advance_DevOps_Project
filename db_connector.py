@@ -36,9 +36,9 @@ def connect_data_table():
         # Check if the table exists, and create it if it doesn't
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS users (
-                user_id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+                user_id INT AUTO_INCREMENT PRIMARY KEY, 
                 user_name VARCHAR(50) NOT NULL,
-                creation_date DATETIME DEFAULT VARCHAR(50) CURRENT_TIMESTAMP
+                creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                  );
             """)
 
