@@ -1,2 +1,5 @@
 venv/
 myenv/
+error.log
+agent.jar
+test.py
