@@ -24,7 +24,7 @@ pipeline {
 	// It checks out the main branch.
 	// Cloning the repository every time we run Jenkins file ensures Jenkins has the latest code before running the pipeline.
 
-                git credentialsId: 'github-pat', url: 'https://github.com/WalaaHijazi1/Advance_DevOps_Project.git', branch: 'main'
+                git credentialsId: 'my_secret_token', url: 'https://github.com/WalaaHijazi1/Advance_DevOps_Project.git', branch: 'main'
             }
         }
 
