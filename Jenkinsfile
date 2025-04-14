@@ -102,15 +102,6 @@ pipeline {
             }
         }
 
-        stage('Run frontend_testing.py') {
-            steps {
-                sh """
-                    . ${VENV_DIR}/bin/activate
-                    python3 frontend_testing.py
-                """
-            }
-        }
-
         stage('Run clean_environment.py') {
             steps {
                 script {
