@@ -14,6 +14,13 @@ pipeline {
     }
 
     stages {
+
+       stage('Clean Workspace') {
+            steps {
+                deleteDir() // Clean workspace before pulling fresh repo
+            }
+        }
+
         stage('Clone Repository') {
             steps {
                 git credentialsId: 'my_secret_token', url: 'https://github.com/WalaaHijazi1/Advance_DevOps_Project.git', branch: 'Advance_project_Docker'
