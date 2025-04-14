@@ -1,10 +1,6 @@
 from flask import Flask, request, jsonify
-from db_connector import connect_data_table
 import logging
-
 import pymysql
-from contextlib import closing
-
 import os
 import signal
 
@@ -22,6 +18,25 @@ app.logger.addHandler(file_handler)
 
 
 import datetime
+
+
+def connect_data_table():
+    try:
+        connection = pymysql.connect(
+            host=os.getenv("DB_HOST", "localhost"),
+            port=int(os.getenv("DB_PORT", 3306)),
+            user=os.getenv("DB_USER", "root"),
+            password=os.getenv("DB_PASSWORD", "restapp"),
+            database=os.getenv("DB_NAME", "restuser")
+        )
+        cursor = connection.cursor()
+        return connection, cursor
+    except Exception as e:
+        print(f"Error connecting to database: {e}")
+        return None, None
+
+
+
 """
 POST – will accept user_name parameter inside the JSON payload.
 A new user will be created in the database (Please refer to Database section) with the
@@ -31,7 +46,6 @@ ID has to be unique!
 On success: return JSON : {“status”: “ok”, “user_added”: <USER_NAME>} + code: 200
 On error: return JSON : {“status”: “error”, “reason”: ”id already exists”} + code: 500
 """
-
 
 @app.route('/')
 def home():

@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: my_sql_container
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: restapp
+      MYSQL_DATABASE: restuser
+      MYSQL_USER: restuser
+      MYSQL_PASSWORD: restpass
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  rest_app:
+    image: walaahij/rest-app-server-{$env.BUILD_ID}
+    depends_on: mysql
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: restuser
+      DB_PASSWORD: restpass
+      DB_NAME: restuser
+    ports:
+      - "5000:5000"
+
+volumes:
+  mysql_data:

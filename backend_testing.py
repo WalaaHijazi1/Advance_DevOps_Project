@@ -1,3 +1,4 @@
+
 """
 Backend testing – for REST API and Database testing (module name = backend_testing.py):
 1. Name the module backend_testing.py
@@ -17,10 +18,47 @@ Step 3: Query (using pymysql) users table and make sure “john” is stored und
 import requests
 import datetime
 import pymysql
-
+import os
 
 
 url = 'http://127.0.0.1:5000/users'
+
+
+def connect_data_table():
+    try:
+        connection = pymysql.connect(
+            host=os.getenv("DB_HOST", "localhost"),
+            port=int(os.getenv("DB_PORT", 3306)),
+            user=os.getenv("DB_USER", "root"),
+            password=os.getenv("DB_PASSWORD", "restapp"),
+            database=os.getenv("DB_NAME", "restuser")
+        )
+        cursor = connection.cursor()
+        return connection, cursor
+    except Exception as e:
+        print(f"Error connecting to database: {e}")
+        return None, None
+
+
+def get_last_inserted_user_id(user_name):
+    connection, cursor = connect_data_table()
+
+    if cursor is None:
+        print("Error: Could not connect to DB.")
+        return None
+
+    query = "SELECT user_id FROM users WHERE user_name=%s ORDER BY user_id DESC LIMIT 1"
+    cursor.execute(query, (user_name,))
+    result = cursor.fetchone()
+
+    cursor.close()
+    connection.close()
+
+    if result:
+        return result[0]
+    else:
+        print("No matching user found.")
+        return None
 
 
 
@@ -38,8 +76,8 @@ def post_new_data():
     # response.status_code == 200 checks whether the HTTP status code of the response is 200, which indicates success (OK) in HTTP.
     # I can delete it because in the app python file there is already have a return status code if there is a problem, but the error raising message
     # can help detect the exact error and handled in a short time.
-    new_data = {'user_id' : 31,
-                'user_name': 'sandy', 
+    new_data = {
+                'user_name': 'nero', 
                 'creation_date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 }
     
@@ -70,8 +108,12 @@ def post_new_data():
 # This function sends a GET request to retrieve a specific user's data
 # from an API and verifies that the response is correct.
 def get_endpoint():
+    connection, cursor = connect_data_table()
     global new_data
-    user_id = new_data['user_id']
+    
+    user_name = new_data['user_name']
+    
+    user_id = get_last_inserted_user_id(user_name)
     
     # Defines a custom HTTP header to mimic a request from a web browser.
     # Some APIs block requests from unknown sources, so using a User-Agent makes the request look legitimate.
