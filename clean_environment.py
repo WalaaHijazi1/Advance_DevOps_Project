@@ -27,7 +27,6 @@ def stop_server(url):
 
 # Calls stop_server() twice and Stop both backend and frontend servers
 stop_server('http://127.0.0.1:5000/stop_server') # First, it tries to stop the backend server running on port 5000, for backend and combined testing.
-#stop_server('http://127.0.0.1:5001/stop_server') # Then, it tries to stop the frontend server running on port 5001 for the frontend testing.
 
 
 """
