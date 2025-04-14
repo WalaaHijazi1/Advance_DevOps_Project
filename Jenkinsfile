@@ -58,19 +58,19 @@ pipeline {
    	  steps {
        		 sh '''
         	echo "Starting SQL container for rest_app.py..."
-        	docker rm -f rest-app-db || true
-        	docker run -d --name rest-app-db \
-            	    -e MYSQL_ROOT_PASSWORD=your_password \
-            	    -e MYSQL_DATABASE=your_database \
-            	    -e MYSQL_USER=your_user \
-            	    -e MYSQL_PASSWORD=your_password \
+        	docker rm -f my-mysql-container || true
+        	docker run -d --name my-mysql-container \
+            	    -e MYSQL_ROOT_PASSWORD=restapp \
+            	    -e MYSQL_DATABASE=restuser \
+            	    -e MYSQL_USER=restuser \
+            	    -e MYSQL_PASSWORD=restpass \
             	    -p 3306:3306 \
             	    mysql:8.0
 
         	# Wait for MySQL to fully start
         	echo "Waiting for MySQL to be ready..."
         	counter=0
-        	until docker exec rest-app-db mysqladmin ping -h "localhost" --silent; do
+        	until docker exec my-mysql-container mysqladmin ping -h "localhost" --silent; do
             	   sleep 2
             	   counter=$((counter + 1))
             	   if [ $counter -ge 15 ]; then
