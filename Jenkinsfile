@@ -63,14 +63,14 @@ pipeline {
             
              	     # Wait for the backend service to be available (check every 2 seconds for up to 30 seconds)
             	     counter=0
-            	     while ! curl -s 127.0.0.1:5000 > /dev/null && [ $counter -lt 15 ]; do
+            	     while ! curl -s 127.0.0.1:5000 > /dev/null && [ \$counter -lt 15 ]; do
                 	echo "Waiting for backend to be available..."
                 	sleep 2
-                	counter=$((counter + 1))
+                	counter=\$((counter + 1))
                    done
                     
 	     # If the backend does not start, the script fails the pipeline.
-            	     if [ $counter -eq 15 ]; then
+            	     if [ \$counter -eq 15 ]; then
                 	echo "Backend did not start in time."
                 	exit 1
             	     fi
