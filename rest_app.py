@@ -79,9 +79,8 @@ def post_method():
         if user_name_exist:
             return jsonify({'status': 'ok', 'user_added': user_name}), 200
         else:
-            return jsonify({'status': 'error', 'reason': 'missing parameters'}), 400
-    else:
-            return jsonify({'status': 'error', 'reason': 'user already exist'}), 500
+            return jsonify({'status': 'error', 'reason': 'user was not found after insertion'}), 500
+
 
 
 """
