@@ -49,34 +49,22 @@ pipeline {
             }
         }
 
-        stage('Start SQL Container for Non-Docker Testing') {
-            steps {
-                sh '''
-                    echo "Starting SQL container for rest_app.py..."
-                    docker rm -f my-mysql-container || true
-                    docker run -d --name my-mysql-container \
-                        -e MYSQL_ROOT_PASSWORD=restapp \
-                        -e MYSQL_DATABASE=restuser \
-                        -e MYSQL_USER=restuser \
-                        -e MYSQL_PASSWORD=restpass \
-                        -p 3306:3306 \
-                        mysql:8.0
-
-                    echo "Waiting for MySQL to be ready..."
-                    counter=0
-                    until docker exec my-mysql-container mysqladmin ping -h "localhost" --silent; do
-                        sleep 2
-                        counter=$((counter + 1))
-                        if [ $counter -ge 15 ]; then
-                            echo "MySQL container did not start in time"
-                            exit 1
-                        fi
-                    done
-
-                    echo "MySQL container is ready!"
-                '''
-            }
-        }
+        stage('Start MySQL and Init Table') {
+           steps {
+        	sh '''
+        	docker rm -f my_temp_sql || true
+        	docker run -d --name my_temp_sql \
+          	    -e MYSQL_ROOT_PASSWORD=restapp \
+          	    -e MYSQL_DATABASE=restuser \
+         	    -e MYSQL_USER=restuser \
+          	    -e MYSQL_PASSWORD=restpass \
+          	    -p 3306:3306 \
+          	    -v $(pwd)/init.sql:/docker-entrypoint-initdb.d/init.sql \
+          	    mysql:8.0
+        	sleep 15  # wait for MySQL to start up
+        	'''
+	}
+         }
 
         stage('Run rest_app.py') {
             steps {

@@ -13,6 +13,7 @@ services:
       MYSQL_PASSWORD: restpass
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   rest_app:
     image: walaahij/rest-app-server-{$env.BUILD_ID}
