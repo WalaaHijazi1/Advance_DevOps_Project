@@ -138,7 +138,7 @@ pipeline {
     }
        stage('Check & Install Docker-Compose'){
 	  steps{
-	     sh """
+	     sh '''
 		if ! command -v docker-compose &> /dev/null; then
 		    echo "Docker Compose not found. Installing..."
 		    sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -148,7 +148,7 @@ pipeline {
 		else
 		    echo "Docker Compose is already installed ..."
 		fi
-	     """
+	     '''
 	}
     }
        stage('Docker Compose stage'){
