@@ -31,7 +31,7 @@ def connect_data_table():
             port=int(os.getenv("DB_PORT", 3306)),
             user=os.getenv("DB_USER", "root"),
             password=os.getenv("DB_PASSWORD", "restapp"),
-            database=os.getenv("DB_NAME", "restuser")
+            database=os.getenv("DB_NAME", "user_db")
         )
         cursor = connection.cursor()
         return connection, cursor
@@ -77,7 +77,7 @@ def post_new_data():
     # I can delete it because in the app python file there is already have a return status code if there is a problem, but the error raising message
     # can help detect the exact error and handled in a short time.
     new_data = {
-                'user_name': 'nero', 
+                'user_name': 'carl', 
                 'creation_date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 }
     

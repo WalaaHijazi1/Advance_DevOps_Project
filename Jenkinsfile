@@ -52,10 +52,10 @@ pipeline {
         stage('Start MySQL and Init Table') {
            steps {
         	sh '''
-        	docker rm -f my_temp_sql || true
-        	docker run -d --name my_temp_sql \
+        	docker rm -f my_mysql-container || true
+        	docker run -d --name my_mysql-container \
           	    -e MYSQL_ROOT_PASSWORD=restapp \
-          	    -e MYSQL_DATABASE=restuser \
+          	    -e MYSQL_DATABASE=user_db \
          	    -e MYSQL_USER=restuser \
           	    -e MYSQL_PASSWORD=restpass \
           	    -p 3306:3306 \

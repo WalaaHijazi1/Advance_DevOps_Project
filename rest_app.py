@@ -27,7 +27,7 @@ def connect_data_table():
             port=int(os.getenv("DB_PORT", 3306)),
             user=os.getenv("DB_USER", "root"),
             password=os.getenv("DB_PASSWORD", "restapp"),
-            database=os.getenv("DB_NAME", "restuser")
+            database=os.getenv("DB_NAME", "user_db")
         )
         cursor = connection.cursor()
         return connection, cursor
