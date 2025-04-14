@@ -113,6 +113,12 @@ pipeline {
             }
         }
 
+        stage('Debug Workspace') {
+            steps {
+        	   sh 'ls -la'
+    	}
+          }
+
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t rest-app-server .'
