@@ -56,27 +56,27 @@ pipeline {
          }
         stage('Run rest_app.py') {
             steps {
-                sh """
+                sh '''
             	      . ${VENV_DIR}/bin/activate        # Activates the virtual environment.
 
 	     nohup python3 rest_app.py > rest_app.log 2>&1 &       # Runs rest_app.py in the background and logs output to rest_app.log.
             
              	     # Wait for the backend service to be available (check every 2 seconds for up to 30 seconds)
             	     counter=0
-            	     while ! curl -s 127.0.0.1:5000 > /dev/null && [ \$counter -lt 15 ]; do
+            	     while ! curl -s 127.0.0.1:5000 > /dev/null && [ $counter -lt 15 ]; do
                 	echo "Waiting for backend to be available..."
                 	sleep 2
-                	counter=\$((counter + 1))
+                	counter=$((counter + 1))
                    done
                     
 	     # If the backend does not start, the script fails the pipeline.
-            	     if [ \$counter -eq 15 ]; then
+            	     if [ $counter -eq 15 ]; then
                 	echo "Backend did not start in time."
                 	exit 1
             	     fi
 	     # if the backend started and runs successfully it will print the following.
                     echo "Backend is up and running."
-        	"""
+        	'''
     	}
          }
         stage('Run backend_testing.py') {       // Runs unit tests or API tests for the backend using backend_testing.py.
