@@ -157,7 +157,8 @@ pipeline {
       }
    }
       stage('Wait for Docker-Compose'){
-	 script{
+	 steps{
+	      script{
 	            sh """
             echo "Waiting for Docker Compose services to be up..."
 
@@ -176,6 +177,7 @@ pipeline {
 
             echo "Service is up and running."
         """
+        	}
 	}
      }
       stage('Docker Compose Test') {
