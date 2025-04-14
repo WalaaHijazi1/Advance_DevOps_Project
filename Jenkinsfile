@@ -54,6 +54,35 @@ pipeline {
     	    	}
     	}
          }
+	stage('Start SQL Container for Non-Docker Testing') {
+   	  steps {
+       		 sh '''
+        	echo "Starting SQL container for rest_app.py..."
+        	docker rm -f rest-app-db || true
+        	docker run -d --name rest-app-db \
+            	    -e MYSQL_ROOT_PASSWORD=your_password \
+            	    -e MYSQL_DATABASE=your_database \
+            	    -e MYSQL_USER=your_user \
+            	    -e MYSQL_PASSWORD=your_password \
+            	    -p 3306:3306 \
+            	    mysql:8.0
+
+        	# Wait for MySQL to fully start
+        	echo "Waiting for MySQL to be ready..."
+        	counter=0
+        	until docker exec rest-app-db mysqladmin ping -h "localhost" --silent; do
+            	   sleep 2
+            	   counter=$((counter + 1))
+            	   if [ $counter -ge 15 ]; then
+                	echo "MySQL container did not start in time"
+                   exit 1
+            	   fi
+        	done
+
+        	echo "MySQL container is ready!"
+        	'''
+   	 }
+    }
         stage('Run rest_app.py') {
             steps {
                 sh '''
