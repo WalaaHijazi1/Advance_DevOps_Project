@@ -69,7 +69,6 @@ def post_method():
     user_added = add_user(user_name) # add the user into the table, taking the function from db.connector python file, where user name is added to the table.
     # and the id is added by the sql database, and another column which is creation date that is set up in the function.
 
-    user_id = get_last_inserted_user_id(user_name)
 
     # the add_user function returns a true is the user was added, and false if the user is already exist, or there is a missing data in the data that was passed,
     # so user_added will return True if the user was added successfully or False if there was a specific Error.
@@ -231,7 +230,7 @@ def users_data(user_id):
             exist = True
             print("The user does exist!!")
             break
-    conn.commit()
+    #conn.commit()
     conn.close()
 
     return exist
@@ -367,27 +366,6 @@ def get_user_name_from_db(id_num):
             cursor.close()
         if conn:
             conn.close()
-
-
-def get_last_inserted_user_id(user_name):
-    connection, cursor = connect_data_table()
-
-    if cursor is None:
-        print("Error: Could not connect to DB.")
-        return None
-
-    query = "SELECT user_id FROM users WHERE user_name=%s ORDER BY user_id DESC LIMIT 1"
-    cursor.execute(query, (user_name,))
-    result = cursor.fetchone()
-
-    cursor.close()
-    connection.close()
-
-    if result:
-        return result[0]
-    else:
-        print("No matching user found.")
-        return None
 
 
 
