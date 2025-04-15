@@ -88,10 +88,20 @@ pipeline {
             }
         }
 
+       stage('Debug Logs') {
+           steps {
+        	echo "Searching for error.log..."
+        	sh 'find . -name "error.log"'
+        	echo "Checking workspace contents..."
+        	sh 'ls -R'
+    	}
+         }
+
        stage('Check REST App Logs') {
             steps {
         	       echo "==== REST APP LOG ====" 
-        	        sh 'cat error.log || echo "No error.log found or no permissions"'
+	       sh 'ls -l error.log || echo "No error.log file found"'
+        	       sh 'cat error.log || echo "No error.log found or no permissions"'
     	}
      }
 
