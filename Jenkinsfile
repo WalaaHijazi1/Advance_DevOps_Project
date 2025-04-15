@@ -53,7 +53,7 @@ pipeline {
            steps {
         	sh '''
         	docker rm -f my_mysql-container || true
-        	docker run -d --name my_mysql-container \
+        	docker run -d --name my-mysql-container \
           	    -e MYSQL_ROOT_PASSWORD=restapp \
           	    -e MYSQL_DATABASE=user_db \
          	    -e MYSQL_USER=restuser \
