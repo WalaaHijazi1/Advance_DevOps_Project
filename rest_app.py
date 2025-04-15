@@ -272,7 +272,7 @@ def check_user_name(user_name):
         conn, cursor = connect_data_table()
 
         # now, it checks if the user name exist, using sql langauge
-        cursor.execute("SELECT * FROM users WHERE user_name LIKE %s",(f"%{user_name}%",))
+        cursor.execute("SELECT * FROM users WHERE user_name = %s",(user_name,))
         # fetching the user name from database
         user = cursor.fetchone()
         # the next line returns True if the user has a user name and false if it doesn't
