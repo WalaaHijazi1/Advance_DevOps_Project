@@ -154,7 +154,7 @@ pipeline {
         stage('Push Docker Image & Set Image Version') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'docker_username', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    withCredentials([usernamePassword(credentialsId: 'docker-username', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh '''
                             echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USER} --password-stdin
                             docker tag rest-app-server:latest walaahij/rest-app-server:${BUILD_ID}
