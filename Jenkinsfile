@@ -88,6 +88,13 @@ pipeline {
             }
         }
 
+       stage('Check REST App Logs') {
+            steps {
+        	       echo "==== REST APP LOG ====" 
+        	        sh 'cat error.log || echo "No error.log found or no permissions"'
+    	}
+     }
+
         stage('Run backend_testing.py') {
             steps {
                 sh """
