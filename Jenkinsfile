@@ -184,6 +184,19 @@ pipeline {
         }
 
         stage('Docker Compose stage') {
+    	steps {
+        	     script {
+           		 // Inject BUILD_ID into docker-compose.yml before running Docker Compose
+            		sh '''
+                	echo "Injecting BUILD_ID into docker-compose.yml..."
+                	sed -i "s|BUILD_ID_PLACEHOLDER|${BUILD_ID}|g" docker-compose.yml
+                	docker-compose up -d --build
+            		'''
+        		}
+    	}
+        }
+
+        stage('Docker Compose stage') {
             steps {
                 script {
                     // Substitute the BUILD_ID into the docker-compose.yml file before running
