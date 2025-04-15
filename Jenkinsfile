@@ -59,6 +59,7 @@ pipeline {
          	    -e MYSQL_USER=restuser \
           	    -e MYSQL_PASSWORD=restpass \
           	    -p 3306:3306 \
+	    -v mysql_data:/var/lib/mysql \
           	    -v $(pwd)/init.sql:/docker-entrypoint-initdb.d/init.sql \
           	    mysql:8.0
         	sleep 15  # wait for MySQL to start up
