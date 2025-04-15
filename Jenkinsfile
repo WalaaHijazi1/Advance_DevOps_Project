@@ -196,18 +196,6 @@ pipeline {
     	}
         }
 
-        stage('Docker Compose stage') {
-            steps {
-                script {
-                    // Substitute the BUILD_ID into the docker-compose.yml file before running
-                    sh '''
-                        sed -i "s|walaahij/rest-app-server-${BUILD_ID}|${IMAGE_NAME}|g" docker-compose.yml
-                        docker-compose up -d --build
-                    '''
-                }
-            }
-        }
-
         stage('Wait for Docker-Compose') {
             steps {
                 script {
