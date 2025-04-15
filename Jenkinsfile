@@ -11,11 +11,11 @@ pipeline {
 
     environment {
         VENV_DIR = "venv"
+        IMAGE_NAME = "walaahij/rest-app-server-${BUILD_ID}"
     }
 
     stages {
-
-       stage('Clean Workspace') {
+        stage('Clean Workspace') {
             steps {
                 deleteDir() // Clean workspace before pulling fresh repo
             }
@@ -63,7 +63,7 @@ pipeline {
           	    mysql:8.0
         	sleep 15  # wait for MySQL to start up
         	'''
-	}
+	   }
          }
 
         stage('Run rest_app.py') {
@@ -140,12 +140,10 @@ pipeline {
         stage('Run Docker Image') {
             steps {
                 sh '''
-	      # Force remove any existing container
+                    # Force remove any existing container
                     docker rm -f rest-app-server-${BUILD_ID} || true
-	      
-            	      # Kill any process using port 5000
-            	      sudo fuser -k 5000/tcp || true
-
+                    # Kill any process using port 5000
+                    sudo fuser -k 5000/tcp || true
                     docker run -d --name rest-app-server-${BUILD_ID} -p 5000:5000 rest-app-server
                 '''
             }
@@ -164,30 +162,36 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Check & Install Docker-Compose') {
             steps {
-        	sh '''
-                   if command -v docker-compose &> /dev/null; then
-                       echo "Docker Compose found. Removing existing version..."
-                       sudo rm -f /usr/local/bin/docker-compose
-                       sudo rm -f /usr/bin/docker-compose
-            	    else
-                       echo "Docker Compose not found."
-            	    fi
-            
-            	     echo "Installing Docker Compose..."
-                  ARCH=$(uname -m)
-            	    sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$ARCH" -o /usr/local/bin/docker-compose
-            	    sudo chmod +x /usr/local/bin/docker-compose
-            	    sudo ln -sf /usr/local/bin/docker-compose /usr/bin/docker-compose || true
-        	'''
-    	}
-         }
+                sh '''
+                    if command -v docker-compose &> /dev/null; then
+                        echo "Docker Compose found. Removing existing version..."
+                        sudo rm -f /usr/local/bin/docker-compose
+                        sudo rm -f /usr/bin/docker-compose
+                    else
+                        echo "Docker Compose not found."
+                    fi
+
+                    echo "Installing Docker Compose..."
+                    ARCH=$(uname -m)
+                    sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$ARCH" -o /usr/local/bin/docker-compose
+                    sudo chmod +x /usr/local/bin/docker-compose
+                    sudo ln -sf /usr/local/bin/docker-compose /usr/bin/docker-compose || true
+                '''
+            }
+        }
 
         stage('Docker Compose stage') {
             steps {
-                sh 'docker-compose up -d --build'
+                script {
+                    // Substitute the BUILD_ID into the docker-compose.yml file before running
+                    sh '''
+                        sed -i "s|walaahij/rest-app-server-${BUILD_ID}|${IMAGE_NAME}|g" docker-compose.yml
+                        docker-compose up -d --build
+                    '''
+                }
             }
         }
 
@@ -218,10 +222,10 @@ pipeline {
             steps {
                 sh '''
                     echo "Running backend tests inside Docker Compose..."
-                    docker-compose exec app python3 backend_testing.py
+                    docker-compose exec rest_app python3 backend_testing.py
 
                     echo "Running frontend tests inside Docker Compose..."
-                    docker-compose exec app python3 frontend_testing.py
+                    docker-compose exec rest_app python3 frontend_testing.py
                 '''
             }
         }
