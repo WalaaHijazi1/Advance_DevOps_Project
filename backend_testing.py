@@ -27,7 +27,7 @@ url = 'http://127.0.0.1:5000/users'
 def connect_data_table():
     try:
         connection = pymysql.connect(
-            host=os.getenv("DB_HOST", "localhost"),
+            host=os.getenv("DB_HOST", "my-mysql-container"),
             port=int(os.getenv("DB_PORT", 3306)),
             user=os.getenv("DB_USER", "root"),
             password=os.getenv("DB_PASSWORD", "restapp"),
