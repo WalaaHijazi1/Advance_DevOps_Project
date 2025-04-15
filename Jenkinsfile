@@ -52,7 +52,7 @@ pipeline {
         stage('Start MySQL and Init Table') {
            steps {
         	sh '''
-        	docker rm -f my_mysql-container || true
+        	docker rm -f my-mysql-container || true
         	docker run -d --name my-mysql-container \
           	    -e MYSQL_ROOT_PASSWORD=restapp \
           	    -e MYSQL_DATABASE=user_db \
@@ -164,22 +164,26 @@ pipeline {
                 }
             }
         }
-
+        
         stage('Check & Install Docker-Compose') {
             steps {
-        	  sh '''
-            		if ! command -v docker-compose &> /dev/null; then
-                	       echo "Docker Compose not found. Installing..."
-                	       ARCH=$(uname -m)
-                	       sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$ARCH" -o /usr/local/bin/docker-compose
-                	       sudo chmod +x /usr/local/bin/docker-compose
-                	      sudo ln -sf /usr/local/bin/docker-compose /usr/bin/docker-compose || true
-            		else
-                	       echo "Docker Compose is already installed."
-            		fi
-        	       '''
-   	 }
-        }
+        	sh '''
+                   if command -v docker-compose &> /dev/null; then
+                       echo "Docker Compose found. Removing existing version..."
+                       sudo rm -f /usr/local/bin/docker-compose
+                       sudo rm -f /usr/bin/docker-compose
+            	    else
+                       echo "Docker Compose not found."
+            	    fi
+            
+            	     echo "Installing Docker Compose..."
+                  ARCH=$(uname -m)
+            	    sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$ARCH" -o /usr/local/bin/docker-compose
+            	    sudo chmod +x /usr/local/bin/docker-compose
+            	    sudo ln -sf /usr/local/bin/docker-compose /usr/bin/docker-compose || true
+        	'''
+    	}
+         }
 
         stage('Docker Compose stage') {
             steps {
