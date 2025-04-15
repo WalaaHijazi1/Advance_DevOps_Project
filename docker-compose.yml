@@ -17,7 +17,8 @@ services:
 
   rest_app:
     image: walaahij/rest-app-server-${BUILD_ID}
-    depends_on: mysql
+    depends_on: 
+      - mysql
     environment:
       DB_HOST: mysql
       DB_PORT: 3306
