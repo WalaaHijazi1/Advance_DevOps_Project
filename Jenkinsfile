@@ -189,8 +189,13 @@ pipeline {
                 script {
                     // Substitute the BUILD_ID into the docker-compose.yml file before running
                     sh '''
+                        # Remove manually started MySQL container if exists
+                        docker rm -f my-mysql-container || true
+
+                        # Replace image tag in docker-compose.yml
 	          sed -i "s|BUILD_ID_PLACEHOLDER|${BUILD_ID}|g" docker-compose.yml
                         # sed -i "s|walaahij/rest-app-server-${BUILD_ID}|${IMAGE_NAME}|g" docker-compose.yml
+
                         docker-compose up -d --build
                     '''
                 }
