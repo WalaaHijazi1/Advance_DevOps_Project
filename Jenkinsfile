@@ -138,18 +138,6 @@ pipeline {
             }
         }
 
-        stage('Run Docker Image') {
-            steps {
-                sh '''
-                    # Force remove any existing container
-                    docker rm -f rest-app-server-${BUILD_ID} || true
-                    # Kill any process using port 5000
-                    sudo fuser -k 5000/tcp || true
-                    docker run -d --name rest-app-server-${BUILD_ID} -p 5000:5000 rest-app-server
-                '''
-            }
-        }
-
         stage('Push Docker Image & Set Image Version') {
             steps {
                 script {
