@@ -179,6 +179,9 @@ pipeline {
                     sh '''
                         # Remove manually started MySQL container if exists
                         docker rm -f my-mysql-container || true
+	    
+    	          # Kill any process that is using port 5000 on the host
+                        sudo fuser -k 5000/tcp || true
 
                         # Replace image tag in docker-compose.yml
 	          sed -i "s|BUILD_ID_PLACEHOLDER|${BUILD_ID}|g" docker-compose.yml
