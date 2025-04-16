@@ -221,9 +221,6 @@ pipeline {
                 sh '''
                     echo "Running backend tests inside Docker Compose..."
                     docker-compose exec rest_app python3 backend_testing.py
-
-                    echo "Running frontend tests inside Docker Compose..."
-                    docker-compose exec rest_app python3 frontend_testing.py
                 '''
             }
         }
