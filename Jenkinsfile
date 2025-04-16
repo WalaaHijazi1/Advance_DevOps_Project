@@ -227,14 +227,18 @@ pipeline {
 
         stage('Docker Compose Down & Remove Image') {
             steps {
-                sh '''
-                    echo "Stopping and removing Docker Compose services..."
-                    docker-compose down --volumes --remove-orphans
+        	sh '''
+            	      echo "Stopping and removing Docker Compose services..."
+            	      docker-compose down --volumes --remove-orphans
 
-                    echo "Removing Docker image rest-app-server..."
-                    docker rmi -f rest-app-server || true
-                '''
-            }
-        }
+            	      echo "Forcing removal of remaining containers..."
+            	      # Remove the REST app container with the BUILD_ID tag and the MySQL container
+            	      docker rm -f rest-app-server-${BUILD_ID} my-mysql-container || true
+
+            	      echo "Removing Docker image rest-app-server..."
+            	      docker rmi -f rest-app-server || true
+        	'''
+    	}
+          }
     }
 }
