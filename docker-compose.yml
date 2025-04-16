@@ -22,7 +22,7 @@ services:
   rest_app:
     image: walaahij/rest-app-server:BUILD_ID_PLACEHOLDER
     depends_on:
-      my-mysql-container:
+      mysql:
         condition: service_healthy
     environment:
       DB_HOST: mysql
