@@ -1,7 +1,7 @@
 services:
   mysql:
     image: mysql:8.0
-    container_name: my-sql-container
+    container_name: my-mysql-container
     restart: always
     ports:
       - 3306:3306
