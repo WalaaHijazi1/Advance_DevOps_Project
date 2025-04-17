@@ -32,7 +32,7 @@ pipeline {
 	// It checks out the main branch.
 	// Cloning the repository every time we run Jenkins file ensures Jenkins has the latest code before running the pipeline.
 
-                git credentialsId: 'my_secret_token', url: 'https://github.com/WalaaHijazi1/Advance_DevOps_Project.git', branch: 'Advance_project_Docker'
+                git credentialsId: 'my_secret_token', url: 'https://github.com/WalaaHijazi1/Advance_DevOps_Project.git', branch: 'AdvanceProject_Docker_Integration'
             }
         }
 
@@ -42,7 +42,7 @@ pipeline {
 	 // If a previous build modified the repository, this ensures a fresh and clean state.
                 sh '''
                     git fetch --all
-                    git reset --hard origin/Advance_project_Docker
+                    git reset --hard origin/AdvanceProject_Docker_Integration
                 '''
             }
         }
