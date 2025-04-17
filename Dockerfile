@@ -1,6 +1,6 @@
 FROM python:3.9-slim
 WORKDIR /app
-COPY requirements.txt rest_app.py backend_testing.py ./
+COPY requirements.txt rest_app.py db_connector.py backend_testing.py ./
 RUN pip3 install --no-cache-dir -r requirements.txt
 EXPOSE 5000
 CMD ["python3","rest_app.py"]
