@@ -13,12 +13,6 @@ app = Flask(__name__)
 app.debug = True
 
 
-# Set up logging
-file_handler = logging.FileHandler('error.log')
-file_handler.setLevel(logging.WARNING)
-app.logger.addHandler(file_handler)
-
-
 import datetime
 
 

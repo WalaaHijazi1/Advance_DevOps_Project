@@ -1,36 +1,58 @@
 services:
   mysql:
-    image: mysql:8.0
-    container_name: my-mysql-container
-    restart: always
+    image: mysql:8.0                       # Pulls the sql image from Docker Hub.
+    container_name: my-mysql-container     # Container's name when image is pulled and container is created.
+    restart: always                        # Automatically restarts the container if it crashes or the host reboots.
     ports:
-      - 3306:3306
+      - 3306:3306                          # Maps the port 3306 of the host machine to the 3306 in the container.
+    
+    # These environment variables are used by MySQL to:
+    # Set the root password (restapp)
+    # Automatically create a new database (user_db)
+    # Create a new user (restuser) with password restpass
+    # Grant that user access to user_db
+    
     environment:
       MYSQL_ROOT_PASSWORD: restapp
       MYSQL_DATABASE: user_db
       MYSQL_USER: restuser
       MYSQL_PASSWORD: restpass
+      
+    # A database data using a Docker volume named mysql_data.
+    # This ensures your database data is not lost when the container restarts.
     volumes:
       - mysql_data:/var/lib/mysql
+    
+    # Defines a health check to verify the MySQL service is up and running.
+    # Tries mysqladmin ping every 10 seconds before reporting it as "unhealthy".
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
       retries: 10
 
+  
+  # The Flask Server Application.
   rest_app:
-    image: walaahij/rest-app-server:BUILD_ID_PLACEHOLDER
+    image: walaahij/rest-app-server:BUILD_ID_PLACEHOLDER       # Using my own flask server docker image that is tagged with Jenkins building ID.
+    
+    # Ensures this app only starts after MySQL passes its health check. Prevents the Flask app from trying to connect to the database too early. 
     depends_on:
       mysql:
         condition: service_healthy
+        
+    # Passing the environment variables, in order to connect the flask app to the sql database.
     environment:
       DB_HOST: mysql
       DB_PORT: 3306
       DB_USER: restuser
       DB_PASSWORD: restpass
       DB_NAME: user_db
+    
+    # Exposing the app on port 5000.
     ports:
       - "5000:5000"
 
+# It will declares the volume's name, and it is used by the sql container to store data.
 volumes:
   mysql_data:
