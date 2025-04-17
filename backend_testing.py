@@ -19,26 +19,11 @@ import requests
 import datetime
 import pymysql
 import os
-
+from db_connector import connect_data_table
 
 url = 'http://127.0.0.1:5000/users'
 
-
-def connect_data_table():
-    try:
-        connection = pymysql.connect(
-            host=os.getenv("DB_HOST"),
-            port=int(os.getenv("DB_PORT", 3306)),
-            user=os.getenv("DB_USER", "root"),
-            password=os.getenv("DB_PASSWORD", "restapp"),
-            database=os.getenv("DB_NAME", "user_db")
-        )
-        cursor = connection.cursor()
-        return connection, cursor
-    except Exception as e:
-        print(f"Error connecting to database: {e}")
-        return None, None
-
+   
 
 def get_last_inserted_user_id(user_name):
     connection, cursor = connect_data_table()

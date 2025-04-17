@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
 import logging
-import pymysql
 import os
 import signal
+
+
+from db_connector import connect_data_table
 
 from werkzeug.exceptions import HTTPException
 
@@ -18,22 +20,6 @@ app.logger.addHandler(file_handler)
 
 
 import datetime
-
-
-def connect_data_table():
-    try:
-        connection = pymysql.connect(
-            host=os.getenv("DB_HOST"),
-            port=int(os.getenv("DB_PORT", 3306)),
-            user=os.getenv("DB_USER", "root"),
-            password=os.getenv("DB_PASSWORD", "restapp"),
-            database=os.getenv("DB_NAME", "user_db")
-        )
-        cursor = connection.cursor()
-        return connection, cursor
-    except Exception as e:
-        print(f"Error connecting to database: {e}")
-        return None, None
 
 
 
