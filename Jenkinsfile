@@ -312,28 +312,26 @@ pipeline {
 
          stage('Port Forward Service & Write URL') {
     	steps {
-        	    script {
+        	   script {
             		sh '''
                 	export KUBECONFIG=$HOME/.kube/config
+                	pkill -f "kubectl port-forward" || true
 
-                	# Kill any previous port-forward process to avoid conflicts
-               	pkill -f "kubectl port-forward" || true
+                	# Forward port 80 in service to localhost:5001
+                	nohup kubectl port-forward svc/hello-python-service 5001:80 > portforward.log 2>&1 &
 
-               	# Start port-forwarding hello-python-service to localhost:5001 in background
-                	nohup kubectl port-forward svc/hello-python-service 5001:80 > port-forward.log 2>&1 &
-
-                	# Wait for port to become available
-               	 for i in {1..10}; do
-                    	nc -z localhost 5001 && break
-                    	echo "Waiting for port-forward to become ready..."
-                    	sleep 2
+                	# Wait until the port becomes available
+                	for i in {1..10}; do
+                    	    nc -z localhost 5001 && break
+                    	    echo "Waiting for port-forward to become ready..."
+                    	    sleep 2
                 	done
 
                 	echo "http://localhost:5001" > k8s_url.txt
             		'''
-        	         }
-                }
-          }
+        	    }
+    	}
+         }
 
           stage('Write Service URL to File') {
     	steps {
