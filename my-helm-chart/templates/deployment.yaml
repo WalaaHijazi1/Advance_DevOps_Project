@@ -19,10 +19,12 @@ spec:
             - containerPort: {{ .Values.service.targetPort }}
           env:
             - name: DB_HOST
-              value: mysql-service
-            - name: DB_NAME
-              value: user_db
+              value: "mysql-service"
+            - name: DB_PORT
+              value: "3306"
             - name: DB_USER
-              value: restuser
+              value: "restuser"
             - name: DB_PASSWORD
-              value: restpass
+              value: "restpass"
+            - name: DB_NAME
+              value: "user_db"
