@@ -312,27 +312,30 @@ pipeline {
 
          stage('Port Forward Service & Write URL') {
     	steps {
-        	   script {
+        	      script {
             		sh '''
                 	export KUBECONFIG=$HOME/.kube/config
                 	pkill -f "kubectl port-forward" || true
 
-                	# Forward port 80 in service to localhost:5001
-                	nohup kubectl port-forward svc/hello-python-service 5001:80 > portforward.log 2>&1 &
+                	# Port-forward Flask app
+                	nohup kubectl port-forward svc/hello-python-service 5001:80 > portforward_app.log 2>&1 &
 
-                	# Wait until the port becomes available
-                	for i in {1..10}; do
-                    	    nc -z localhost 5001 && break
-                    	    echo "Waiting for port-forward to become ready..."
-                    	    sleep 2
+                	# Port-forward MySQL
+                	nohup kubectl port-forward svc/mysql-service 3306:3306 > portforward_mysql.log 2>&1 &
+
+                	# Wait for both ports
+               	for i in {1..10}; do
+                    	     nc -z localhost 5001 && nc -z localhost 3306 && break
+                    	     echo "Waiting for port-forward to become ready..."
+                    	     sleep 2
                 	done
 
                 	echo "http://localhost:5001" > k8s_url.txt
             		'''
-        	    }
+        	     }
     	}
-         }
-        
+          }
+
         stage('Kubernetes Backend Test') {
     	environment {
         	         DB_HOST = 'localhost'
