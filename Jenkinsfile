@@ -292,7 +292,7 @@ pipeline {
 
          stage('Write Service URL to File') {
              steps {
-        	sh 'minikube service rest-app-server --url > k8s_url.txt'
+        	sh 'minikube service hello-python-service --url > k8s_url.txt'
      	}
          }
 
