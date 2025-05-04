@@ -4,10 +4,10 @@ metadata:
   name: hello-python-service
 spec:
   selector:
-    app: rest-app-service
+    app: rest-app-server
   type: {{ .Values.service.type }}
   ports:
     - protocol: TCP
       port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.targetPort }}
-      nodePort: {{ .Values.service.nodePort }}  # <- Add this line
+      nodePort: {{ .Values.service.nodePort }}
