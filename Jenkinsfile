@@ -333,23 +333,6 @@ pipeline {
     	}
          }
 
-          stage('Write Service URL to File') {
-    	steps {
-        	    script {
-            		sh '''
-                	export KUBECONFIG=$HOME/.kube/config
-		
-		 # Get the nodePort for the hello-python-service
-                	NODE_PORT=$(kubectl get svc hello-python-service -n default -o jsonpath="{.spec.ports[0].nodePort}")
-
-		
-                 	# Compose the full URL
-                	echo "http://host.minikube.internal:$NODE_PORT" > k8s_url.txt
-            		'''
-        	      }
-    	}
-         }
-
         stage('Kubernetes Backend Test') {
     	steps {
         	// Activates virtual environment and runs the test script that reads k8s_url.txt
