@@ -17,3 +17,12 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           ports:
             - containerPort: {{ .Values.service.targetPort }}
+          env:
+            - name: DB_HOST
+              value: mysql-service
+            - name: DB_NAME
+              value: user_db
+            - name: DB_USER
+              value: restuser
+            - name: DB_PASSWORD
+              value: restpass
