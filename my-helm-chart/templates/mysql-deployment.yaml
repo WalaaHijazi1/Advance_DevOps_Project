@@ -26,3 +26,9 @@ spec:
               value: restpass
           ports:
             - containerPort: 3306
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-storage
+          emptyDir: {}  # Use persistentVolumeClaim for production
