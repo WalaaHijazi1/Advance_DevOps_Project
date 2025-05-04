@@ -313,7 +313,7 @@ pipeline {
          stage('Write Service URL to File') {
     	steps {
         	     // Writes the external Minikube service URL into k8s_url.txt, e.g., http://192.168.49.2:31480
-        	     sh 'minikube service hello-python-service --url --format "{{.URL}}" > k8s_url.txt'
+        	     sh 'minikube service hello-python-service --url -n default > k8s_url.txt'
     	}
          }
 
