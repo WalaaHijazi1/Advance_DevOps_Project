@@ -78,7 +78,7 @@ def get_endpoint():
     user_id = get_last_inserted_user_id(user_name)
 
     if not user_id:
-        print("Cannot test GET endpoint — user_id not found.")
+        print("Cannot test GET endpoint: user_id not found.")
         sys.exit(1)
 
     try:
