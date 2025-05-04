@@ -281,6 +281,8 @@ pipeline {
           }
         // === Kubernetes via Helm ===
         stage('Verify Kubernetes Access') {
+	// here I wanted to make sure that kubectl is accessable via Jenkins
+	// running: kubectl cluster-info shows kubernetes cluster's ebdpoint
     	steps {
        	      sh '''
             	       echo "Checking Kubernetes cluster accessibility..."
@@ -292,6 +294,8 @@ pipeline {
 
          stage('Install Helm') {
     	steps {
+	      // this stage is used to install helm-3 CLI
+	      // helm helps us manage kubernetes applications, by creating helm charts.
         	      sh '''
             	      echo "Installing Helm..."
             	      curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
@@ -301,8 +305,13 @@ pipeline {
         
          stage('Deploy Helm Chart') {
     	steps {
+	     // This stage deploys the flask server 'rest_app.py' using helm
         	     sh '''
+	     # The first line sets environment variable for helm in order to use the config file of k8s.
             	     export KUBECONFIG=$HOME/.kube/config
+
+	     # Upgrade an existing release named rest-app-server, if it exists, and if it doesn't it will install a new release.
+	     # Overrides the value of .Values.image.repository in the helm chart with my Docker Hub image
 	     helm upgrade --install rest-app-server ./my-helm-chart \
                 	--set image.repository=walaahij/rest-app-server \
                 	--set image.tag=${BUILD_ID}
@@ -313,23 +322,35 @@ pipeline {
          stage('Port Forward Service & Write URL') {
     	steps {
         	      script {
+		// Opens access to the Flask app (port 80 → 5001) and MySQL (port 3306) from Jenkins by port-forwarding.
+		// because Jenkins is outside the kubernetes cluster, it test port-forwarding for testing.
             		sh '''
+		# as before, the next line is to set environment variables, to use kubernetes files, and $HOME/.kube/config is where Minikube or other tools usually store the cluster credentials.
                 	export KUBECONFIG=$HOME/.kube/config
+
+		# next, we kill any running kubectl port-forward processes in order to avoid errors.
                 	pkill -f "kubectl port-forward" || true
 
-                	# Port-forward Flask app
+                	# Port-forward Flask app:
+		# Forwards local port 5001 to port 80 of the Kubernetes service hello-python-service (an arbitatry name)
+		# nohup ... & runs it in the background, even if the shell closes.
+		# Logs are saved to portforward_app.log.
                 	nohup kubectl port-forward svc/hello-python-service 5001:80 > portforward_app.log 2>&1 &
 
                 	# Port-forward MySQL
+		# forwards port 3306 to the MySQL service inside the cluster
                 	nohup kubectl port-forward svc/mysql-service 3306:3306 > portforward_mysql.log 2>&1 &
 
-                	# Wait for both ports
+		# Tries up to 10 times (every 2 seconds) to check if both ports are open.
+		# nc -z checks if a port is listening.
+		# it checks if the thr port-forwarding process in both ports is successful, if both are listenning the loop breaks down and it goes to the next step.
                	for i in {1..10}; do
                     	     nc -z localhost 5001 && nc -z localhost 3306 && break
                     	     echo "Waiting for port-forward to become ready..."
                     	     sleep 2
                 	done
 
+		# Writes the app’s accessible URL to a file in order to be read later in a test stage later.
                 	echo "http://localhost:5001" > k8s_url.txt
             		'''
         	     }
@@ -337,6 +358,9 @@ pipeline {
           }
 
         stage('Kubernetes Backend Test') {
+	// Running python script K8S_backend_testing.py from Jenkins, but that script relies on reading database connection parameters using:
+	// os.getenv("DB_HOST")
+	// If the variables here is not defined in Jenkins, then os.getenv("DB_HOST") will return None, and the script will fail to connect to the database.
     	environment {
         	         DB_HOST = 'localhost'
        	         DB_PORT = '3306'
@@ -345,6 +369,11 @@ pipeline {
         	         DB_NAME = 'user_db'
     	}
     	steps {
+		// Runs a Python test (K8S_backend_testing.py) that:
+		// POSTs a new user to the Flask app
+		// Verifies it's written into the MySQL DB
+		// Reads it back via a GET request
+		// this stage verifies that the deployed backend works correctly with the database in Kubernetes.
         		sh '''
             		. ${VENV_DIR}/bin/activate
             		python3 K8S_backend_testing.py
@@ -354,6 +383,9 @@ pipeline {
      
        stage('Clean HELM Environment') {
     	steps {
+	       # Removes the Kubernetes release after testing.
+	       # Deletes the helm release: rest-app-server from the Kubernetes cluster
+	       # || true: If the command fails (rest-app-server doesn't exist), ignore the error and continue.
         	       sh 'helm delete rest-app-server || true'
     	}
          }
