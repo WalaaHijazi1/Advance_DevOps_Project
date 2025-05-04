@@ -383,9 +383,9 @@ pipeline {
      
        stage('Clean HELM Environment') {
     	steps {
-	       # Removes the Kubernetes release after testing.
-	       # Deletes the helm release: rest-app-server from the Kubernetes cluster
-	       # || true: If the command fails (rest-app-server doesn't exist), ignore the error and continue.
+	       // Removes the Kubernetes release after testing.
+	       // Deletes the helm release: rest-app-server from the Kubernetes cluster
+	       // || true: If the command fails (rest-app-server doesn't exist), ignore the error and continue.
         	       sh 'helm delete rest-app-server || true'
     	}
          }
