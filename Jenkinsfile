@@ -332,16 +332,23 @@ pipeline {
         	    }
     	}
          }
-
+        
         stage('Kubernetes Backend Test') {
+    	environment {
+        	         DB_HOST = 'mysql-service'
+       	         DB_PORT = '3306'
+        	         DB_USER = 'restuser'
+         	         DB_PASSWORD = 'restpass'
+        	         DB_NAME = 'user_db'
+    	}
     	steps {
-        	// Activates virtual environment and runs the test script that reads k8s_url.txt
-        	sh '''
-            	. ${VENV_DIR}/bin/activate
-            	python3 K8S_backend_testing.py
-        	'''
-          }
-       }
+        		sh '''
+            		. ${VENV_DIR}/bin/activate
+            		python3 K8S_backend_testing.py
+        		'''
+    	}
+         }
+     
        stage('Clean HELM Environment') {
     	steps {
         	       sh 'helm delete rest-app-server || true'
