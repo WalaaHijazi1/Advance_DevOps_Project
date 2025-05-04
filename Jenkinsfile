@@ -306,6 +306,7 @@ pipeline {
             	     helm upgrade --install rest-app-server . \
                 	--set image.repository=walaahij/rest-app-server \
                 	--set image.tag=${BUILD_ID}
+		--max-pack-size 10485760
         	      '''
     	}
           }
