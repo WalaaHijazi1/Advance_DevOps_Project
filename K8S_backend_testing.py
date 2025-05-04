@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import requests
 import datetime
 import pymysql
@@ -67,7 +68,7 @@ def post_new_data():
         print("Error: The response is not valid JSON.")
         sys.exit(1)
 
-    assert response.status_code == 200, f"? API Error! Status: {response.status_code}"
+    assert response.status_code == 200, f"API Error! Status: {response.status_code}"
     print("POST test passed.")
 
 # === Function to GET the same user ===
