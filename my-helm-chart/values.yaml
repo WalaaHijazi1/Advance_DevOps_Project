@@ -1,0 +1,10 @@
+replicaCount: 5
+
+image:
+  repository: walaahijazi/rest-app-server
+  tag: "latest"  # overridden from Jenkins via --set
+
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 5000

@@ -278,5 +278,36 @@ pipeline {
         	'''
     	}
           }
+        // === Kubernetes via Helm ===
+        stage('Deploy Helm Chart') {
+            steps {
+                sh '''
+                    helm upgrade --install rest-app-server ./my-helm-chart \
+                        --set image.repository=walaahij/rest-app-server \
+                        --set image.tag=${BUILD_ID}
+                '''
+            }
+        }
+
+        stage('Write Service URL to File') {
+            steps {
+                sh 'minikube service hello-python-service --url > k8s_url.txt'
+            }
+        }
+
+        stage('Kubernetes Backend Test') {
+            steps {
+                sh '''
+                    . ${VENV_DIR}/bin/activate
+                    python3 K8S_backend_testing.py
+                '''
+            }
+        }
+
+        stage('Clean HELM Environment') {
+            steps {
+                sh 'helm delete rest-app-server || true'
+            }
+        }
     }
 }

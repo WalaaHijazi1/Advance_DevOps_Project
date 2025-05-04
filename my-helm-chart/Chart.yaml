@@ -1,0 +1,5 @@
+apiVersion: v2
+name: restapp-chart
+description: A Helm chart for deploying the Flask-based World Game app
+type: application
+version: 0.1.0
