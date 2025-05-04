@@ -279,6 +279,15 @@ pipeline {
     	}
           }
         // === Kubernetes via Helm ===
+         stage('Install Helm') {
+    	steps {
+        	      sh '''
+            	      echo "Installing Helm..."
+            	      curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+        	       '''
+    	}
+          }
+
           stage('Deploy Helm Chart') {
     	steps {
         	          sh '''
@@ -305,5 +314,10 @@ pipeline {
         	'''
           }
        }
+       stage('Clean HELM Environment') {
+    	steps {
+        	       sh 'helm delete rest-app-server || true'
+    	}
+         }
     }
 }
