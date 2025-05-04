@@ -303,10 +303,9 @@ pipeline {
     	steps {
         	     sh '''
             	     export KUBECONFIG=$HOME/.kube/config
-            	     helm upgrade --install rest-app-server . \
+	     helm upgrade --install rest-app-server ./my-helm-chart \
                 	--set image.repository=walaahij/rest-app-server \
                 	--set image.tag=${BUILD_ID}
-		--max-pack-size 10485760
         	      '''
     	}
           }
