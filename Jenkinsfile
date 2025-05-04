@@ -335,7 +335,7 @@ pipeline {
         
         stage('Kubernetes Backend Test') {
     	environment {
-        	         DB_HOST = 'mysql-service'
+        	         DB_HOST = 'localhost'
        	         DB_PORT = '3306'
         	         DB_USER = 'restuser'
          	         DB_PASSWORD = 'restpass'

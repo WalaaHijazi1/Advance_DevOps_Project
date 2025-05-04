@@ -2,8 +2,14 @@
 import requests
 import datetime
 import pymysql
-from db_connector import connect_data_table
+import os
 import sys
+
+# === Force override for DB_HOST during K8s port-forwarded test ===
+# This assumes port-forwarding to localhost:3306 is active.
+os.environ['DB_HOST'] = '127.0.0.1'
+
+from db_connector import connect_data_table  # after setting env
 
 # === Load Service URL from Jenkins-generated file ===
 try:
@@ -97,7 +103,6 @@ def get_endpoint():
 if __name__ == "__main__":
     post_new_data()
     get_endpoint()
-
 
 
 
