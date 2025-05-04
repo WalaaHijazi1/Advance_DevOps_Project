@@ -9,7 +9,7 @@ pipeline {
     }
 
     triggers {
-         Runs every 30 minutes regardless of SCM changes
+         //Runs every 30 minutes regardless of SCM changes
         cron('H/30 * * * *')
     }
 
