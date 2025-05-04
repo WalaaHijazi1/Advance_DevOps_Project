@@ -10,3 +10,4 @@ spec:
     - protocol: TCP
       port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.targetPort }}
+      nodePort: {{ .Values.service.nodePort }}  # <- Add this line
