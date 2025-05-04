@@ -17,6 +17,7 @@ pipeline {
         VENV_DIR = "venv"          // Define virtual environment directory
     }
 
+
     stages {
         stage('Clean Workspace') {
             steps {
@@ -279,6 +280,16 @@ pipeline {
     	}
           }
         // === Kubernetes via Helm ===
+        stage('Verify Kubernetes Access') {
+    	steps {
+       	      sh '''
+            	       echo "Checking Kubernetes cluster accessibility..."
+                     export KUBECONFIG=$HOME/.kube/config
+                     kubectl cluster-info
+        	      '''
+    	}
+         }
+
          stage('Install Helm') {
     	steps {
         	      sh '''
@@ -287,16 +298,17 @@ pipeline {
         	       '''
     	}
           }
-
-          stage('Deploy Helm Chart') {
+        
+         stage('Deploy Helm Chart') {
     	steps {
-        	          sh '''
-            	           helm upgrade --install rest-app-server ./my-helm-chart \
+        	     sh '''
+            	     export KUBECONFIG=$HOME/.kube/config
+            	     helm upgrade --install rest-app-server ./my-helm-chart \
                 	--set image.repository=walaahij/rest-app-server \
                 	--set image.tag=${BUILD_ID}
-      	  	'''
+        	      '''
     	}
-         }
+          }
 
          stage('Write Service URL to File') {
     	steps {
