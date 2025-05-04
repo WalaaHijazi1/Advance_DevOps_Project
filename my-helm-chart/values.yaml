@@ -5,7 +5,7 @@ image:
   tag: "latest"  # overridden from Jenkins via --set
 
 service:
-  type: LoadBalancer
+  type: NodePort
   port: 80
   targetPort: 5000
   nodePort: 30080
