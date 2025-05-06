@@ -1,3 +1,4 @@
+# This deployment file deploy the sql server inside the cluster, with the data defined below.
 apiVersion: apps/v1
 kind: Deployment
 metadata:

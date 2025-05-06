@@ -1,6 +1,6 @@
 apiVersion: apps/v1
-kind: Deployment
-metadata:
+kind: Deployment            # telling Kubernetes to create a Deployment, which ensures that a specified number of pod replicas are running and updated automatically.
+metadata:                   # sets the name of the deployment object in Kubernetes. It's used to identify and manage this deployment.
   name: mysql
 spec:
   selector:

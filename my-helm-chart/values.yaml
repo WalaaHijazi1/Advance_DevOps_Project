@@ -1,11 +1,12 @@
-replicaCount: 5
+# This file provide default values used in files (deployment.yaml,service.yaml) in the templates folder.
+replicaCount: 5   # Number of Flask App instances.
 
-image:
+image:            # The docker image to deploy.
   repository: walaahijazi/rest-app-server
   tag: "latest"  # overridden from Jenkins via --set
 
-service:
-  type: NodePort
-  port: 80
-  targetPort: 5000
-  nodePort: 30080
+service:          # configures how the flask app is exposed.
+  type: NodePort  # is a way on how to recieve traffic in Kubernetes from outside the Cluster.
+  port: 80              # the port the service exposed to.
+  targetPort: 5000     # The port on the container (that exist in the pod) that the service sends to, it's like an entrance for the node into the pod.
+  nodePort: 30080      # nodeport is the port on the node for external traffic from the internet (it's like an entrance in the node).

@@ -25,6 +25,7 @@ def connect_data_table():
 
 
         cursor.execute("SELECT * FROM users")
+        # Fetching all the dat in the table's database.
         rows = cursor.fetchall()
         print(f"Connected successfully! {rows}")
 

@@ -1,13 +1,14 @@
-apiVersion: v1
-kind: Service
+# This service file exposes Flask server inside the cluster to other services and to the outside world.
+apiVersion: v1                 # Basic API version for Kubernetes Services.
+kind:                          # Creating a 'Service' object.
 metadata:
-  name: hello-python-service
+  name: hello-python-service   # Name of the services, this is the name that will be refered to for port forwarding and other comunications 
 spec:
-  selector:
-    app: rest-app-server
-  type: {{ .Values.service.type }}
+  selector:                           # Tells service the name of the pod to forward traffic to? 
+    app: rest-app-server              # looks for this pod name.
+  type: {{ .Values.service.type }}    # Type of the service that is fetched from 'values' yaml file.
   ports:
     - protocol: TCP
-      port: {{ .Values.service.port }}
-      targetPort: {{ .Values.service.targetPort }}
-      nodePort: {{ .Values.service.nodePort }}
+      port: {{ .Values.service.port }}                # The external port exposed by the service. In thisproject it is defined as: 80.
+      targetPort: {{ .Values.service.targetPort }}    # The internal port on the pod where the Flask app is actually listening.
+      nodePort: {{ .Values.service.nodePort }}        # It's the port on the Kubernetes node (or Minikube VM) where the app can be accessed (in kubernetes NodePorts are in the 30000-32767 range by default).
