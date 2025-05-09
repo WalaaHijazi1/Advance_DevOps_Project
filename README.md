@@ -107,7 +107,7 @@ To validate the full application stack — ensuring:
   <img src="images/Jenkins_Pipeline.png" alt="Jenkins Pipeline" width="500" height="750">
 </p>
 
-In this part I created a CI and tested it using Jenkins, the pipeline goes like this:
+In this part I created a CI -Continous Integration- and tested it using Jenkins, the pipeline goes like this:
 - The pipeline runs on any available node.
 - Before the pipeline I defined an Option block that configures how the pipeline behaves, the block automatically delets old builds and states to delete builds after 5 days, and no more than 20 builds should be saved.
 - The trigger block define when the pipeline should start a build, for example in this specific pipeline it starts building every 30 minutes (every hour).
