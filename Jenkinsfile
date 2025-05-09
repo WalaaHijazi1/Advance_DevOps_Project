@@ -88,16 +88,16 @@ pipeline {
 	      nohup python3 web_app.py > web_app.log 2>&1 &         # Runs web_app.py in the background and logs output to web_app.log.
 
             
-             	     # Wait for the backend service to be available (check every 2 seconds for up to 30 seconds)
+             	     # Wait for the frontend web interface service to be available (check every 2 seconds for up to 30 seconds)
             	     counter=0
             	     while ! curl -s 127.0.0.1:5001 > /dev/null && [ $counter -lt 15 ]; do               # Waits for the frontend to start on port 5001 (max 30 seconds).
-                	echo "Waiting for backend to be available..."
+                	echo "Waiting for frontend to be available..."
                 	sleep 2
                 	counter=$((counter + 1))
                    done
             
             	     if [ $counter -eq 15 ]; then                   # If the frontend does not start, the script fails the pipeline.
-                	echo "Backend did not start in time."
+                	echo "Frontend did not start in time."
                 	exit 1
             	     fi
                     echo "Backend is up and running."

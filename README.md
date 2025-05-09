@@ -99,3 +99,49 @@ This script performs an end-to-end integration test that checks the interaction 
 To validate the full application stack — ensuring:
 - Data flows properly from the user → through the API → to the database.
 - Data is correctly retrieved through both the API and the frontend UI.
+
+
+## Second Part - Jenkins Integration:
+
+<p align="center">
+  <img src="images/Jenkins_Pipeline.png" alt="Jenkins Pipeline" width="500" height="750">
+</p>
+
+In this part I created a CI and tested it using Jenkins, the pipeline goes like this:
+- The pipeline runs on any available node.
+- Before the pipeline I defined an Option block that configures how the pipeline behaves, the block automatically delets old builds and states to delete builds after 5 days, and no more than 20 builds should be saved.
+- The trigger block define when the pipeline should start a build, for example in this specific pipeline it starts building every 30 minutes (every hour).
+- The 'environment' block defines an environment variable that is used through the pipeline.
+#### Stages:
+    In stages I defined steps to run the pipeline steps. 
+- Clone Repository stage: 
+   * clonning the git repository into Jenkins workspace directory that has the same name as the pipline name in the host machine of Jenkins, in my case it's a Docker container.
+- Update Repostory stage: 
+   * update all the branches of the clonned repository.
+   * ensures the local repository is the same as the remote one (or cloned one).
+- Install Dependencies stage:
+   * Removes any virtual environment folder.
+   * create a new virtual environment folder.
+   * activates the virtual environment.
+   * install all the dependencies.
+- Run rest_app.py stage:
+   * activates the virtual environment.
+   * Runs rest_app.py in the background.
+   * Wait for the backend service to be available.
+   * will return a message, if the backend started or failed.
+- Run web_app.py stage:
+   * activates the virtual environment.
+   * Runs web_app.py in the background.
+   * Wait for the frontend web interface service to be available.
+- Run backend_testing.py stage:
+   * activates the virtual environment.
+   * Runs the backend_testing.py to test the Flask server functionality.
+- Run frontend_testing.py stage:
+   * activates the virtual environment.
+   * Runs the frontend_testing.py for a web interface testing.
+- Run combined_testing.py stage:
+   * activates the virtual environment.
+   * Runs the combined_testing.py that tests both the backend and the frontend testing.
+- Stop Servers stage:
+   * activates the virtual environment.
+   * Stop the backend and frontend servers.
