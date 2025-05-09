@@ -48,7 +48,7 @@ with:
 - each module runs independntly.
 
 ### Backend Testing:
-This module performs automated testing of both the REST API and the MySQL database to validate end-to-end functionality. <br>
+This module performs automated testing of both the REST API and the MySQL database to validate end-to-end functionality.
 The defined target endpoint: http://127.0.0.1:5000/users This is the REST API endpoint exposed by rest_app.py.
 #### What does it do:
 - POST Request: Submits new user data (user ID, name, and creation timestamp) to the backend using the REST API.
@@ -113,7 +113,7 @@ In this part I created a CI and tested it using Jenkins, the pipeline goes like 
 - The trigger block define when the pipeline should start a build, for example in this specific pipeline it starts building every 30 minutes (every hour).
 - The 'environment' block defines an environment variable that is used through the pipeline.
 #### Stages:
-    In stages I defined steps to run the pipeline steps. 
+In stages I defined steps to run the pipeline steps. 
 - Clone Repository stage: 
    * clonning the git repository into Jenkins workspace directory that has the same name as the pipline name in the host machine of Jenkins, in my case it's a Docker container.
 - Update Repostory stage: 
