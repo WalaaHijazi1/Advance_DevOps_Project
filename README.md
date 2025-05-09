@@ -99,10 +99,3 @@ This script performs an end-to-end integration test that checks the interaction 
 To validate the full application stack — ensuring:
 - Data flows properly from the user → through the API → to the database.
 - Data is correctly retrieved through both the API and the frontend UI.
-
-
-## Second Part - Jenkins Integration:
-
-<p align="center">
-  <img src="images/Jenkins_Pipeline.png" alt="Jenkins Pipeline" width="500" height="750">
-</p>

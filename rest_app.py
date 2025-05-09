@@ -110,7 +110,7 @@ def get_data(user_id):
         On success: return JSON : {“status”: “ok”, “user_updated”: <USER_NAME>} + code: 200
         On error: return JSON : {“status”: “error”, “reason”: ”no such id”} + code: 500
 
-"""
+        """
 
 @app.errorhandler(Exception)
 def handle_exception(e):
