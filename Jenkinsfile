@@ -68,7 +68,7 @@ pipeline {
         stage('Start MySQL and Init Table') {
            steps {
         	sh '''
-	# remove if there was an sql container that was
+	# remove if there was an sql container
         	docker rm -f my-mysql-container || true
 
 	# this creates an sql docker container it's name is: my-mysql-container it's running in a detach mode,
