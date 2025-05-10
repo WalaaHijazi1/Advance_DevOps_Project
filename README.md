@@ -43,7 +43,7 @@
    * Runs clean_environment.py to stop both backend servers of the rest app flask server.
 
 <p align="center">
-  <img src="images/Docker_img.png" alt="Docker creation flow" width="750" height="300">
+  <img src="images/Docker_img.png" alt="Docker creation flow" width="800" height="350">
 </p>
 
 - Build Docker Image stage:
