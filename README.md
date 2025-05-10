@@ -5,7 +5,7 @@
 ## Jenkins-ParameterizedBuild
 
 <p align="center">
-  <img src="images/Jenkins-ParameterizedBuild.png" alt="Jenkins ParameterizedBuild" width="512" height="768">
+  <img src="images/Jenkins-ParameterizedBuild.png" alt="Jenkins ParameterizedBuild" width="490" height="700">
 </p>
 
 In this branch I built a Jenkins pipeline with several parameters, it was built based on the data in the link:
