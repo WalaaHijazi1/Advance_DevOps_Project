@@ -42,7 +42,7 @@
    * Runs the backend_testing.py to test the Flask server functionality.
 - Run clean_environment.py stage:
    * activates the virtual environment.
-   * Runs clean_environment.py to stop both backend servers of the rest app flask server.
+   * Runs clean_environment.py to stop both backend servers of the rest app flask server.<br>
    
 **_The explenation of the Docker Compose stages and the testing of the server after creating the server flask container and the sql container is explained in the AdvanceProject_Docker_Integration branch_**
 
@@ -57,7 +57,7 @@
    * kubectl cluster-info: if this command succeeds, you have access to the cluster and it’s running correctly. If it fails, there may be issues with:
       * Credentials
       * Network access
-      * Misconfigured or missing kubeconfig
+      * Misconfigured or missing kubeconfig <br>
 **_Helm is a Kubernetes package manager. it helps in streamlining the application management by using “Charts” to package the Kubernetes resources. It facilitates simplifying the deployment, upgrades, and dependency resolution within Kubernetes clusters._**
 - Install Helm stage:
    * downloads the official Helm installation script from the Helm GitHub repository.
@@ -65,9 +65,10 @@
 
 #### Helm Chart Folder:
 <p align="center">
-  <img src="images/Helm_chart_folder.png" alt="helm chart folder map" width="300" height="300">
+  <img src="images/Helm_chart_folder.png" alt="helm chart folder map" width="700" height="200">
 </p>
 
+- The porpuse of the chart.yaml file 
 
 - Deploy Helm Chart stage:
    * 
