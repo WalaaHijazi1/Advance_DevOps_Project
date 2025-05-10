@@ -3,7 +3,7 @@
 
 
 
-#### This project implements a complete CI/CD pipeline using Jenkins. The Jenkins pipeline demonstrates a robust DevOps workflow that integrates automation, continuous integration (CI), and reproducible deployments across environments using modern tools such as Docker, Docker Compose, Kubernetes, and Helm. The pipeline is fully automated—from source code retrieval to application testing and deployment—requiring no manual intervention once triggered.
+This project implements a complete CI/CD pipeline using Jenkins. The Jenkins pipeline demonstrates a robust DevOps workflow that integrates automation, continuous integration (CI), and reproducible deployments across environments using modern tools such as Docker, Docker Compose, Kubernetes, and Helm. The pipeline is fully automated—from source code retrieval to application testing and deployment—requiring no manual intervention once triggered.
 
 
 <p align="center">
@@ -139,3 +139,15 @@
    * Removes the Kubernetes release after testing.
 	 * Deletes the helm release: rest-app-server from the Kubernetes cluster
 	 * || true: If the command fails (rest-app-server doesn't exist), ignore the error and continue.
+   
+
+   
+**_Continuous Delivery (CD)_** is a DevOps practice where code changes are automatically built, tested, and prepared for a release to production. The goal is to ensure that software can be reliably and consistently deployed at any time with minimal manual effort.
+While Continuous Integration (CI) focuses on testing and merging code frequently, CD takes it a step further by automating the delivery of the application to environments like staging or production after those tests pass.
+**_This project_** demonstrates CD through the automation of build, packaging, deployment, testing, and cleanup using Docker and Kubernetes.
+The Jenkins pipeline embodies Continuous Delivery by:
+- Automatically building and packaging code.
+- Tagging and pushing Docker images to a remote registry.
+- Deploying to Kubernetes using Helm.
+- Verifying deployments through automated tests.
+- Cleaning up environments post-deployment.
