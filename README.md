@@ -1,6 +1,5 @@
-<p align="center">
-  <img src="images/title.png" alt="Title" width="1000" height="580">
-</p>
+#                    ˜”*°•.˜”*°• Advance DevOps Project •°*”˜.•°*”˜
+#                          ˜”*°•.˜”*°• Walaa Hijazi •°*”˜.•°*”˜
 
 The project was devided into parts:
 
