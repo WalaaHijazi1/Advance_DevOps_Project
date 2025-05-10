@@ -1,4 +1,4 @@
-# ˜”*°•.˜”*°•Advance DevOps Project - Kubernetes Integration•°*”˜.•°*”˜
+# ˜”*°•.˜”*°• Advance DevOps Project - Kubernetes •°*”˜.•°*”˜
 #                  ˜”*°•.˜”*°• Walaa Hijazi •°*”˜.•°*”˜
 
 <p align="center">
