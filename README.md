@@ -44,11 +44,11 @@
 - Build Docker Image stage:
 
 <p align="center">
-  <img src="images/Docker_img.png" alt="Docker creation flow" width="650" height="250">
+  <img src="images/Docker_img.png" alt="Docker creation flow" width="750" height="300">
 </p>
 
 
-   * I wrote a ** _Docker File_ ** that defines a rest_app image that we will build a container from it, the dockerfile steps are:
+   * I wrote a **_Docker File_** that defines a rest_app image that we will build a container from it, the dockerfile steps are:
       * first a base image is defined.
       * defining a work directory inside the container.
       * copying all the related files to start the server into the work dir.
