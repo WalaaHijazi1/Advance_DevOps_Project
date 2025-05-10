@@ -55,7 +55,7 @@ pipeline {
                     }
             		sh """
             	      	. ${VENV_DIR}/bin/activate
-            	      	nohup python3 ${server_name} &  # Start rest_app.py in the background
+            	      	nohup python3 ${server_name} &  # Start the server that was chosen in the background
             
              	     	# Wait for the backend service to be available (check every 2 seconds for up to 30 seconds)
             	     	counter=0
