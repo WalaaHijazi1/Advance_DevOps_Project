@@ -145,3 +145,12 @@ In stages I defined steps to run the pipeline steps.
 - Stop Servers stage:
    * activates the virtual environment.
    * Stop the backend and frontend servers.
+   
+   
+CI (Continuos Integration) is a practice in DevOps, it is refers to the build and unit testing stages of the software release process. Every revision that is committed triggers an automated build and test.
+In this part of the project, the jenkins pipeline indeed reflects a part of a CI practice:
+- Source code integeration: Jenkins, a version control system is used to copy the code from it's source - GitHub.
+- Automated built: Which in this case, an python virtual environment is set up and downloading dependancies.
+- Automated testing: Testiing the application that was built by writing testing codes to test backend, frontend functionality of the project.
+- Trigger-based execution: it is defined to triggers the building of the pipeline every 30 minutes (Automated Scheduling).
+- Clean build environment: The environment is cleaned up and rebuild from scratch every time the pipeline runs.
