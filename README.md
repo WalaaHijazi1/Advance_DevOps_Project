@@ -57,18 +57,80 @@
    * kubectl cluster-info: if this command succeeds, you have access to the cluster and it’s running correctly. If it fails, there may be issues with:
       * Credentials
       * Network access
-      * Misconfigured or missing kubeconfig <br>
+      * Misconfigured or missing kubeconfig
+
 **_Helm is a Kubernetes package manager. it helps in streamlining the application management by using “Charts” to package the Kubernetes resources. It facilitates simplifying the deployment, upgrades, and dependency resolution within Kubernetes clusters._**
+
 - Install Helm stage:
    * downloads the official Helm installation script from the Helm GitHub repository.
    * | bash: pipes the downloaded script directly into bash to execute it.
 
 #### Helm Chart Folder:
 <p align="center">
-  <img src="images/Helm_chart_folder.png" alt="helm chart folder map" width="700" height="200">
+  <img src="images/Helm_chart_folder.png" alt="helm chart folder map" width="650" height="200">
 </p>
 
-- The porpuse of the chart.yaml file 
+- The chart.yaml file:
+   * Identifies the chart.
+   * Sets metadata like version, description, and type.
+- The values.yaml file:
+   * Defines default values for the Helm chart, injected into the templates.
+   * it has variables that is used in deployments and services inside templates.
+
+- templates Folder:
+- deployment.yaml file:
+   * Defines how to deploy the Flask app in Kubernetes.
+   * replicas: How many Flask app pods to run.
+   * Uses the Docker image defined in values.yaml.
+   * Injects environment variables for SQL connection.
+- mysql-deployment.yaml file:
+   * Defines how to deploy MySQL in Kubernetes.
+   * Runs MySQL 8.0 with custom credentials.
+   * Mounts a volume (emptyDir — non-persistent).
+   * One replica for a single DB instance.
+- service.yaml file:
+   * Defines how to expose the Flask app to the cluster and external world.
+   * Uses NodePort to allow external access via <NodeIP>:30080.
+   * Maps external port 80 to Flask container's port 5000.
+   * Selector: means the Service routes traffic to Pods that have a specific label, in the case of this file it maps it to rest-app-server (label) pod.
+- mysql-service.yaml file:
+   * Creates a ClusterIP service for MySQL.
+   * Lets the Flask app talk to the DB using the name mysql-service and port 3306.
+   * Ensures internal networking between services.
+
+<p align="center">
+  <img src="images/k8s_flow.png" alt="kubernetes flow map" width="900" height="650">
+</p>
 
 - Deploy Helm Chart stage:
-   * 
+   * setting KUBECONFIG as an environment variable that would tells kubectl where is the configuration file of kubernetes is.
+   * If the release rest-app-server already exists → upgrade it.
+   * If not → install a new release.
+   * Upgrade an existing release named rest-app-server by using the configuration of deplyment.yaml and service.yaml in chart folder.
+   * it sets the image of the server tags it based on the build_id.
+- Port Forward Service & Write URL stage:
+   * Opens access to the Flask app (port 80 → 5001) and MySQL (port 3306) from Jenkins by port-forwarding.
+   * kill any running kubectl port-forward processes in order to avoid errors.
+   * **Port-forward Flask app:**
+      * Forwards local port 5001 to port 80 of the Kubernetes service hello-python-service (an arbitatry name)
+      * nohup ... & runs it in the background, even if the shell closes.
+      * Logs are saved to portforward_app.log.
+   * **Port-forward MySQL:**
+      *  forwards port 3306 to the MySQL service inside the cluster
+   * Tries up to 10 times (every 2 seconds) to check if both ports are open (ports:5001 and 3306).
+   * it checks if the port-forwarding process in both ports is successful, if both are listenning the loop breaks down and it goes to the next step.
+   * the endpoint url is saved into k8s_url.txt file, Saving the URL to k8s_url.txt serves an important automation purpose in the Jenkins pipeline:
+      * Jenkins stages don’t automatically share variables, so writing the service URL to a file allows subsequent stages (like testing scripts) to read the actual accessible URL from disk.
+      * Since the Flask service is only reachable on localhost:5001 due to port forwarding, storing the reachable URL ensures tests are targeting the correct endpoint (especially in Jenkins where context may change)
+- Kubernetes Backend Test stage:
+   * Running python script K8S_backend_testing.py from Jenkins, but that script relies on reading database connection parameters.
+   * Environment variables are defined to allow us to access the SQL database.
+   * Runs a Python test (K8S_backend_testing.py) that:
+      * POSTs a new user to the Flask app.
+      * Verifies it's written into the MySQL DB.
+      * Reads it back via a GET request.
+   * this stage verifies that the deployed backend works correctly with the database in Kubernetes.
+- Clean HELM Environment stage:
+   * Removes the Kubernetes release after testing.
+	 * Deletes the helm release: rest-app-server from the Kubernetes cluster
+	 * || true: If the command fails (rest-app-server doesn't exist), ignore the error and continue.

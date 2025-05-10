@@ -343,7 +343,7 @@ pipeline {
 
 		# Tries up to 10 times (every 2 seconds) to check if both ports are open.
 		# nc -z checks if a port is listening.
-		# it checks if the thr port-forwarding process in both ports is successful, if both are listenning the loop breaks down and it goes to the next step.
+		# it checks if the the port-forwarding process in both ports is successful, if both are listenning the loop breaks down and it goes to the next step.
                	for i in {1..10}; do
                     	     nc -z localhost 5001 && nc -z localhost 3306 && break
                     	     echo "Waiting for port-forward to become ready..."
