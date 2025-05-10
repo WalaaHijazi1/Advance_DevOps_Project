@@ -1,6 +1,11 @@
 # ˜”*°•.˜”*°• Advance DevOps Project - Kubernetes •°*”˜.•°*”˜
 #                  ˜”*°•.˜”*°• Walaa Hijazi •°*”˜.•°*”˜
 
+
+
+#### This project implements a complete CI/CD pipeline using Jenkins. The Jenkins pipeline demonstrates a robust DevOps workflow that integrates automation, continuous integration (CI), and reproducible deployments across environments using modern tools such as Docker, Docker Compose, Kubernetes, and Helm. The pipeline is fully automated—from source code retrieval to application testing and deployment—requiring no manual intervention once triggered.
+
+
 <p align="center">
   <img src="images/jenkins_K8s_integration.png" alt="jenkins Diagram with K8s" width="450" height="700">
 </p>
