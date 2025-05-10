@@ -2,5 +2,5 @@
 #                          ˜”*°•.˜”*°• Walaa Hijazi •°*”˜.•°*”˜
 
 <p align="center">
-  <img src="images/Jenkins_Docker.png" alt="Docker integration" width="500" height="700">
+  <img src="images/Jenkins_Docker.png" alt="Docker integration" width="400" height="600">
 </p>
