@@ -107,6 +107,11 @@ This project implements a complete CI/CD pipeline using Jenkins. The Jenkins pip
   <img src="images/k8s_flow.png" alt="kubernetes flow map" width="900" height="650">
 </p>
 
+
+Traffic flow:
+External Client → NodeIP:30080 → NodePort Service (port:80) → Flask Pod (targetPort:5000)
+
+
 - Deploy Helm Chart stage:
    * setting KUBECONFIG as an environment variable that would tells kubectl where is the configuration file of kubernetes is.
    * If the release rest-app-server already exists → upgrade it.
