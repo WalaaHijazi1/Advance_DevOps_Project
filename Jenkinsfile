@@ -335,7 +335,7 @@ pipeline {
 		# Forwards local port 5001 to port 80 of the Kubernetes service hello-python-service (an arbitatry name)
 		# nohup ... & runs it in the background, even if the shell closes.
 		# Logs are saved to portforward_app.log.
-                	nohup kubectl port-forward svc/hello-python-service 5001:5000 > portforward_app.log 2>&1 &
+                	nohup kubectl port-forward svc/hello-python-service 5001:80 > portforward_app.log 2>&1 &
 
                 	# Port-forward MySQL
 		# forwards port 3306 to the MySQL service inside the cluster
