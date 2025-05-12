@@ -332,10 +332,10 @@ pipeline {
                 	pkill -f "kubectl port-forward" || true
 
                 	# Port-forward Flask app:
-		# Forwards local port 5001 to port 80 of the Kubernetes service hello-python-service (an arbitatry name)
+		# Forwards local port 5000 to port 80 of the Kubernetes service hello-python-service (an arbitatry name)
 		# nohup ... & runs it in the background, even if the shell closes.
 		# Logs are saved to portforward_app.log.
-                	nohup kubectl port-forward svc/hello-python-service 5001:80 > portforward_app.log 2>&1 &
+                	nohup kubectl port-forward svc/hello-python-service 5000:80 > portforward_app.log 2>&1 &
 
                 	# Port-forward MySQL
 		# forwards port 3306 to the MySQL service inside the cluster
@@ -345,13 +345,13 @@ pipeline {
 		# nc -z checks if a port is listening.
 		# it checks if the the port-forwarding process in both ports is successful, if both are listenning the loop breaks down and it goes to the next step.
                	for i in {1..10}; do
-                    	     nc -z localhost 5001 && nc -z localhost 3306 && break
+                    	     nc -z localhost 5000 && nc -z localhost 3306 && break
                     	     echo "Waiting for port-forward to become ready..."
                     	     sleep 2
                 	done
 
 		# Writes the app’s accessible URL to a file in order to be read later in a test stage later.
-                	echo "http://localhost:5001" > k8s_url.txt
+                	echo "http://localhost:5000" > k8s_url.txt
             		'''
         	     }
     	}
