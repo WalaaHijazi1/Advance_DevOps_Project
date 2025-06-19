@@ -8,10 +8,10 @@ pipeline {
         // numToKeepStr: '20' → Jenkins will keep a maximum of 20 builds, even if they are recent.  
     }
 
-    triggers {
+   // triggers {
          //Runs every 30 minutes regardless of SCM changes
-        cron('H/30 * * * *')
-    }
+        //cron('H/30 * * * *')
+   // }
 
     environment {
         VENV_DIR = "venv"          // Define virtual environment directory
