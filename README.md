@@ -1,8 +1,8 @@
 #                    ˜”*°•.˜”*°• Advance DevOps Project •°*”˜.•°*”˜
 #                          ˜”*°•.˜”*°• Walaa Hijazi •°*”˜.•°*”˜
 
-This project demonstrates a Python application with a RESTful API backend, a Flask-based frontend, and a MySQL database hosted on Amazon RDS. It includes comprehensive backend, frontend, and integration testing modules. Additionally, a fully automated Jenkins CI pipeline was implemented to streamline development, testing, and deployment. The project showcases key DevOps practices, such as automated builds, scheduled testing, and environment management, reflecting real-world CI workflows.
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#### This project demonstrates a Python application with a RESTful API backend, a Flask-based frontend, and a MySQL database hosted on Amazon RDS. It includes comprehensive backend, frontend, and integration testing modules. Additionally, a fully automated Jenkins CI pipeline was implemented to streamline development, testing, and deployment. The project showcases key DevOps practices, such as automated builds, scheduled testing, and environment management, reflecting real-world CI workflows.
 
 The project was devided into parts:
 
